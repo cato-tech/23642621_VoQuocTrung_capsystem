@@ -147,7 +147,48 @@ Các chức năng sau chưa được ưu tiên trong giai đoạn 7 tuần:
 ### 4. Mục tiêu phạm vi trong 7 tuần
 
 Hoàn thành một phiên bản **MVP** có thể vận hành được toàn bộ quy trình đặt xe cơ bản, đồng thời có kiến trúc đủ linh hoạt để phát triển thêm các chức năng trong các giai đoạn tiếp theo.
+## Business Requirements – Yêu cầu nghiệp vụ
 
+### BR01 – Hỗ trợ đặt xe trực tuyến
+Hệ thống phải cho phép khách hàng tạo và quản lý yêu cầu đặt xe trực tuyến, từ điểm đón đến điểm đến và lựa chọn loại xe phù hợp.
+
+### BR02 – Tự động tìm kiếm và phân công tài xế
+Hệ thống phải tự động tìm kiếm và phân công tài xế phù hợp dựa trên vị trí, trạng thái sẵn sàng và các tiêu chí vận hành của doanh nghiệp.
+
+### BR03 – Đảm bảo khả năng tiếp tục tìm tài xế
+Khi tài xế được đề xuất từ chối hoặc không phản hồi, hệ thống phải tiếp tục tìm tài xế khác mà không yêu cầu khách hàng tạo lại yêu cầu đặt xe.
+
+### BR04 – Theo dõi chuyến đi
+Hệ thống phải cho phép khách hàng theo dõi trạng thái chuyến đi và các thông tin liên quan từ khi đặt xe đến khi chuyến hoàn thành.
+
+### BR05 – Quản lý tài xế và phương tiện
+Hệ thống phải hỗ trợ doanh nghiệp quản lý thông tin tài xế, phương tiện và trạng thái hoạt động của tài xế.
+
+### BR06 – Quản lý chuyến đi
+Hệ thống phải quản lý toàn bộ vòng đời của chuyến đi, bao gồm tạo yêu cầu, tìm tài xế, nhận chuyến, thực hiện chuyến, hoàn thành hoặc hủy chuyến.
+
+### BR07 – Tính cước và thanh toán
+Hệ thống phải xác định số tiền khách hàng cần thanh toán dựa trên loại dịch vụ và thông tin chuyến đi.
+
+### BR08 – Hỗ trợ nhiều hình thức thanh toán
+Hệ thống phải hỗ trợ thanh toán bằng tiền mặt và thanh toán điện tử thông qua nhà cung cấp thanh toán bên ngoài.
+
+### BR09 – Quản lý thông báo
+Hệ thống phải cung cấp thông báo cho khách hàng và tài xế về các sự kiện quan trọng trong quá trình đặt và thực hiện chuyến đi.
+
+### BR10 – Quản lý vận hành
+Hệ thống phải cung cấp giao diện quản trị để nhân viên vận hành quản lý khách hàng, tài xế, phương tiện và chuyến đi.
+
+### BR11 – Hỗ trợ xử lý sự cố
+Hệ thống phải cho phép nhân viên vận hành theo dõi và hỗ trợ xử lý các trường hợp chuyến đi hoặc giao dịch gặp vấn đề.
+
+### BR12 – Báo cáo và theo dõi hoạt động
+Hệ thống phải cung cấp báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế.
+
+### BR13 – Đảm bảo bảo mật
+Hệ thống phải bảo vệ thông tin cá nhân, thông tin phương tiện, dữ liệu vị trí và dữ liệu giao dịch của người dùng.
+
+### BR14 – Kiểm soát quyền truy cập
 Hệ thống phải phân quyền người dùng và nhân viên để đảm bảo các chức năng quản trị nhạy cảm chỉ được thực hiện bởi người có quyền.
 
 ### BR15 – Ghi nhận lịch sử hoạt động
