@@ -64,3 +64,50 @@
 | **Cơ quan quản lý** | Giám sát việc tuân thủ các quy định liên quan |
 | **Nhà cung cấp hạ tầng công nghệ** | Cung cấp và duy trì hạ tầng hệ thống |
 | **Nhà cung cấp dịch vụ thông báo** | Cung cấp các kênh SMS, Email và Push Notification |
+
+#Stakeholder matrix
+<table>
+<tr>
+<td align="center" width="50%">
+
+### HIGH POWER – LOW INTEREST
+**Keep Satisfied**
+
+- Government / Regulatory
+- Payment Provider
+
+</td>
+<td align="center" width="50%">
+
+### HIGH POWER – HIGH INTEREST
+**Manage Closely**
+
+- Senior Management
+- Operations Manager
+
+</td>
+</tr>
+
+<tr>
+<td align="center" width="50%">
+
+### LOW POWER – LOW INTEREST
+**Monitor**
+
+- Potential Customers
+- Tech / Infrastructure
+- Advertising Partners
+
+</td>
+<td align="center" width="50%">
+
+### LOW POWER – HIGH INTEREST
+**Keep Informed**
+
+- Operations Staff
+- Customers / Riders
+- Drivers
+
+</td>
+</tr>
+</table>
