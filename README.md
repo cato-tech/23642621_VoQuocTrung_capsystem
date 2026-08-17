@@ -65,7 +65,7 @@
 | **Nhà cung cấp hạ tầng công nghệ** | Cung cấp và duy trì hạ tầng hệ thống |
 | **Nhà cung cấp dịch vụ thông báo** | Cung cấp các kênh SMS, Email và Push Notification |
 
-#Stakeholder matrix
+# Stakeholder matrix
 <table>
 <tr>
 <td align="center" width="50%">
