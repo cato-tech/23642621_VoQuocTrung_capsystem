@@ -187,3 +187,98 @@ Hoàn thành một phiên bản **MVP** có thể vận hành được toàn b�
 | **FR10** | Quản lý vận hành | Hệ thống cung cấp giao diện quản trị để nhân viên vận hành quản lý khách hàng, tài xế, phương tiện và chuyến đi. |
 | **FR11** | Xử lý sự cố | Hệ thống cho phép nhân viên vận hành theo dõi và hỗ trợ xử lý các trường hợp chuyến đi hoặc giao dịch gặp vấn đề. |
 | **FR12** | Báo cáo và theo dõi hoạt động | Hệ thống cung cấp báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế. |
+
+flowchart LR
+
+    %% ================= ACTORS =================
+    Customer["👤 Khách hàng"]
+    Driver["🚗 Tài xế"]
+    Staff["👨‍💼 Nhân viên vận hành"]
+    Manager["👨‍💼 Quản lý vận hành"]
+    Admin["🏢 Ban Giám đốc"]
+
+    Payment["💳 Nhà cung cấp<br/>thanh toán"]
+    Notification["🔔 Nhà cung cấp<br/>dịch vụ thông báo"]
+
+    %% ================= SYSTEM =================
+    subgraph System["HỆ THỐNG ĐẶT XE"]
+
+        UC01(["Đăng ký / Đăng nhập"])
+        UC02(["Đặt xe"])
+        UC03(["Theo dõi chuyến đi"])
+        UC04(["Thanh toán"])
+        UC05(["Đánh giá tài xế"])
+
+        UC06(["Nhận / Từ chối chuyến"])
+        UC07(["Cập nhật trạng thái chuyến"])
+        UC08(["Cập nhật vị trí"])
+        UC09(["Hoàn thành chuyến"])
+
+        UC10(["Tìm kiếm tài xế"])
+        UC11(["Phân công tài xế"])
+        UC12(["Tiếp tục tìm tài xế"])
+
+        UC13(["Quản lý khách hàng"])
+        UC14(["Quản lý tài xế"])
+        UC15(["Quản lý phương tiện"])
+        UC16(["Quản lý chuyến đi"])
+        UC17(["Xử lý sự cố"])
+
+        UC18(["Tính cước"])
+        UC19(["Gửi thông báo"])
+
+        UC20(["Xem báo cáo"])
+        UC21(["Theo dõi hoạt động"])
+    end
+
+    %% ================= CUSTOMER =================
+    Customer --> UC01
+    Customer --> UC02
+    Customer --> UC03
+    Customer --> UC04
+    Customer --> UC05
+
+    %% ================= DRIVER =================
+    Driver --> UC06
+    Driver --> UC07
+    Driver --> UC08
+    Driver --> UC09
+
+    %% ================= OPERATIONS =================
+    Staff --> UC13
+    Staff --> UC14
+    Staff --> UC15
+    Staff --> UC16
+    Staff --> UC17
+
+    %% ================= MANAGER =================
+    Manager --> UC16
+    Manager --> UC17
+    Manager --> UC20
+    Manager --> UC21
+
+    %% ================= MANAGEMENT =================
+    Admin --> UC20
+    Admin --> UC21
+
+    %% ================= EXTERNAL SYSTEMS =================
+    Payment --> UC04
+    Notification --> UC19
+
+    %% ================= RELATIONSHIPS =================
+    UC02 -.->|include| UC10
+    UC10 -.->|include| UC11
+    UC11 -.->|include| UC06
+    UC12 -.->|extend| UC10
+
+    UC02 -.->|include| UC18
+    UC04 -.->|include| UC18
+    UC03 -.->|include| UC07
+    UC03 -.->|include| UC08
+
+    UC06 -.->|include| UC19
+    UC07 -.->|include| UC19
+    UC09 -.->|include| UC19
+
+    %% ================= STYLE =================
+    style System fill:#f8fafc,stroke:#334155,stroke-width:3px
