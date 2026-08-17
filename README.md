@@ -175,5 +175,3 @@ Hoàn thành một phiên bản **MVP** có thể vận hành toàn bộ quy tr�
 | **BR17** | Đảm bảo tính liên tục của dịch vụ | Hạn chế ảnh hưởng khi một thành phần như thanh toán hoặc thông báo gặp lỗi, tránh làm gián đoạn toàn bộ chức năng đặt xe. |
 | **BR18** | Hỗ trợ phát triển trong tương lai | Cho phép bổ sung loại dịch vụ, phương thức thanh toán, nhà cung cấp thông báo và thay đổi thành phần kỹ thuật mà không cần xây dựng lại toàn bộ hệ thống. |
 
-### BR18 – Hỗ trợ phát triển trong tương lai
-Hệ thống phải có khả năng bổ sung loại dịch vụ mới, phương thức thanh toán mới, nhà cung cấp thông báo mới và thay đổi các thành phần kỹ thuật mà không phải xây dựng lại toàn bộ hệ thống.
