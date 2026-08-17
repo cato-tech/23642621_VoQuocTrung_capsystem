@@ -148,10 +148,6 @@ Các chức năng sau chưa được ưu tiên trong giai đoạn 7 tuần:
 
 Hoàn thành một phiên bản **MVP** có thể vận hành được toàn bộ quy trình đặt xe cơ bản, đồng thời có kiến trúc đủ linh hoạt để phát triển thêm các chức năng trong các giai đoạn tiếp theo.
 
-### 4. Mục tiêu phạm vi trong 7 tuần
-
-Hoàn thành một phiên bản **MVP** có thể vận hành toàn bộ quy trình đặt xe cơ bản, đồng thời có kiến trúc đủ linh hoạt để phát triển thêm các chức năng trong các giai đoạn tiếp theo.
-
 ## Business Requirements – Yêu cầu nghiệp vụ
 
 | ID | Yêu cầu nghiệp vụ | Mô tả |
