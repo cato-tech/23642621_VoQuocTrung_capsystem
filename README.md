@@ -111,3 +111,77 @@
 </td>
 </tr>
 </table>
+
+# Phạm vi dự án CAB System trong 7 tuần
+1. Trong phạm vi dự án
+Khách hàng
+Đăng ký, đăng nhập.
+Cập nhật thông tin cá nhân.
+Nhập điểm đón và điểm đến.
+Lựa chọn loại xe.
+Tạo yêu cầu đặt xe.
+Theo dõi trạng thái chuyến đi.
+Xem thông tin tài xế.
+Xem lịch sử chuyến đi.
+Xem số tiền phải trả.
+Đánh giá tài xế sau chuyến.
+Tài xế
+Đăng nhập.
+Cập nhật hồ sơ và thông tin phương tiện.
+Bật/tắt trạng thái sẵn sàng nhận chuyến.
+Nhận thông báo chuyến mới.
+Chấp nhận hoặc từ chối chuyến.
+Cập nhật trạng thái chuyến:
+Đã đến điểm đón.
+Đã đón khách.
+Đang di chuyển.
+Hoàn thành chuyến.
+Cập nhật vị trí để hỗ trợ tìm tài xế gần khách hàng.
+Nhân viên vận hành
+Quản lý khách hàng.
+Quản lý tài xế.
+Quản lý phương tiện.
+Theo dõi các chuyến đang diễn ra.
+Theo dõi trạng thái tài xế.
+Hỗ trợ xử lý chuyến bị lỗi.
+Tra cứu lịch sử giao dịch.
+Phân quyền nhân viên.
+Đặt xe và phân công tài xế
+Tiếp nhận yêu cầu đặt xe.
+Tìm tài xế dựa trên vị trí và trạng thái sẵn sàng.
+Ưu tiên tài xế phù hợp/gần khách hàng.
+Nếu tài xế từ chối hoặc không phản hồi → tìm tài xế khác.
+Nếu không tìm được tài xế → thông báo cho khách hàng.
+Thanh toán
+Tính cước chuyến đi.
+Hỗ trợ tiền mặt và thanh toán điện tử.
+Tích hợp với một nhà cung cấp thanh toán bên ngoài.
+Không lưu thông tin nhạy cảm của thẻ/tài khoản.
+Xử lý trường hợp thanh toán thất bại.
+Thông báo
+Thông báo khi yêu cầu đặt xe được tiếp nhận.
+Thông báo khi có tài xế nhận chuyến.
+Thông báo khi tài xế đến điểm đón.
+Thông báo khi chuyến hoàn thành.
+Thông báo kết quả thanh toán.
+Thông báo chuyến mới cho tài xế.
+Báo cáo cơ bản
+Số lượng chuyến.
+Doanh thu.
+Tỷ lệ chuyến hoàn thành.
+Tỷ lệ hủy.
+Hiệu quả hoạt động của tài xế.
+2. Ngoài phạm vi trong 7 tuần
+Để tránh phạm vi quá lớn, các chức năng sau không ưu tiên triển khai trong phiên bản đầu tiên:
+Nhiều nhà cung cấp thanh toán cùng lúc.
+Nhiều nhà cung cấp SMS/Email/Push cùng lúc.
+Hệ thống khuyến mãi, voucher, mã giảm giá phức tạp.
+Chương trình thành viên/tích điểm.
+Định giá động nâng cao bằng AI/Machine Learning.
+Dự đoán nhu cầu bằng AI.
+Chat trực tiếp giữa khách hàng và tài xế.
+Hệ thống bản đồ/GPS tự xây dựng.
+Ứng dụng riêng cho từng nền tảng nếu vượt quá khả năng của nhóm.
+Các loại dịch vụ mới ngoài dịch vụ đặt xe cơ bản.
+3. Phạm vi cốt lõi
+Có thể tóm tắt phạm vi 7 tuần bằng chuỗi:
