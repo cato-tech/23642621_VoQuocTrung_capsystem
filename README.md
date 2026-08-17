@@ -175,15 +175,15 @@ Hoàn thành một phiên bản **MVP** có thể vận hành được toàn b�
 
 | ID | Functional Requirement | Description |
 |---|---|---|
-| **FR01** | Online Booking | Hệ thống cho phép khách hàng tạo và quản lý yêu cầu đặt xe trực tuyến, bao gồm điểm đón, điểm đến và loại xe. |
-| **FR02** | Driver Search & Assignment | Hệ thống tự động tìm kiếm và phân công tài xế phù hợp dựa trên vị trí, trạng thái sẵn sàng và tiêu chí vận hành. |
-| **FR03** | Continuous Driver Search | Hệ thống tiếp tục tìm tài xế khác khi tài xế được đề xuất từ chối hoặc không phản hồi. |
-| **FR04** | Trip Tracking | Hệ thống cho phép khách hàng theo dõi trạng thái và thông tin chuyến đi từ khi đặt xe đến khi hoàn thành. |
-| **FR05** | Driver & Vehicle Management | Hệ thống hỗ trợ quản lý thông tin tài xế, phương tiện và trạng thái hoạt động. |
-| **FR06** | Trip Lifecycle Management | Hệ thống quản lý toàn bộ vòng đời chuyến đi: tạo yêu cầu, tìm tài xế, nhận chuyến, thực hiện, hoàn thành hoặc hủy. |
-| **FR07** | Fare Calculation | Hệ thống xác định số tiền khách hàng cần thanh toán dựa trên loại dịch vụ và thông tin chuyến đi. |
-| **FR08** | Payment Processing | Hệ thống hỗ trợ thanh toán bằng tiền mặt và thanh toán điện tử thông qua Payment Provider bên ngoài. |
-| **FR09** | Notification Management | Hệ thống gửi thông báo cho khách hàng và tài xế về các sự kiện quan trọng trong quá trình đặt và thực hiện chuyến đi. |
-| **FR10** | Operations Management | Hệ thống cung cấp giao diện quản trị để nhân viên vận hành quản lý khách hàng, tài xế, phương tiện và chuyến đi. |
-| **FR11** | Incident Handling | Hệ thống cho phép nhân viên vận hành theo dõi và hỗ trợ xử lý các trường hợp chuyến đi hoặc giao dịch gặp vấn đề. |
-| **FR12** | Reporting & Monitoring | Hệ thống cung cấp báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế. |
+| **FR01** | Đặt xe trực tuyến | Hệ thống cho phép khách hàng tạo và quản lý yêu cầu đặt xe, bao gồm điểm đón, điểm đến và loại xe. |
+| **FR02** | Tìm kiếm và phân công tài xế | Hệ thống tự động tìm kiếm và phân công tài xế phù hợp dựa trên vị trí, trạng thái sẵn sàng và tiêu chí vận hành. |
+| **FR03** | Tiếp tục tìm tài xế | Hệ thống tiếp tục tìm tài xế khác khi tài xế được đề xuất từ chối hoặc không phản hồi. |
+| **FR04** | Theo dõi chuyến đi | Hệ thống cho phép khách hàng theo dõi trạng thái và thông tin chuyến đi từ khi đặt xe đến khi hoàn thành. |
+| **FR05** | Quản lý tài xế và phương tiện | Hệ thống hỗ trợ quản lý thông tin tài xế, phương tiện và trạng thái hoạt động của tài xế. |
+| **FR06** | Quản lý chuyến đi | Hệ thống quản lý toàn bộ vòng đời chuyến đi, từ tạo yêu cầu, tìm tài xế, nhận chuyến, thực hiện đến hoàn thành hoặc hủy chuyến. |
+| **FR07** | Tính cước | Hệ thống xác định số tiền khách hàng cần thanh toán dựa trên loại dịch vụ và thông tin chuyến đi. |
+| **FR08** | Xử lý thanh toán | Hệ thống hỗ trợ thanh toán bằng tiền mặt và thanh toán điện tử thông qua nhà cung cấp thanh toán bên ngoài. |
+| **FR09** | Quản lý thông báo | Hệ thống gửi thông báo cho khách hàng và tài xế về các sự kiện quan trọng trong quá trình đặt và thực hiện chuyến đi. |
+| **FR10** | Quản lý vận hành | Hệ thống cung cấp giao diện quản trị để nhân viên vận hành quản lý khách hàng, tài xế, phương tiện và chuyến đi. |
+| **FR11** | Xử lý sự cố | Hệ thống cho phép nhân viên vận hành theo dõi và hỗ trợ xử lý các trường hợp chuyến đi hoặc giao dịch gặp vấn đề. |
+| **FR12** | Báo cáo và theo dõi hoạt động | Hệ thống cung cấp báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế. |
