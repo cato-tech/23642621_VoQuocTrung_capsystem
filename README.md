@@ -1,56 +1,45 @@
-# CAB System – Các vấn đề cần làm rõ
+## Các vấn đề/yếu điểm của hệ thống hiện tại và câu hỏi cần làm rõ
 
-## 1. Tính cước
+### 1. Phân công tài xế còn thủ công
+- Hệ thống hiện tại đang phân công tài xế như thế nào?
+- Những khó khăn lớn nhất của việc phân công tài xế thủ công là gì?
 
-* Cước chuyến xe được tính dựa trên những yếu tố nào?
-* Giá cước có thay đổi theo loại xe, khoảng cách, thời gian hoặc khu vực không?
-* Có áp dụng phụ phí vào giờ cao điểm, ngày lễ hoặc khi nhu cầu tăng cao không?
-* Khi giá cước thay đổi trong lúc chuyến đang diễn ra thì hệ thống áp dụng mức giá nào?
+### 2. Khách hàng khó theo dõi trạng thái chuyến đi
+- Hiện tại khách hàng có thể theo dõi những thông tin nào về chuyến đi?
+- Hệ thống mới cần cung cấp những trạng thái nào cho khách hàng?
 
-## 2. Phân công tài xế
+### 3. Thông tin thanh toán chưa được quản lý tập trung
+- Hiện tại doanh nghiệp đang quản lý thông tin và lịch sử thanh toán như thế nào?
+- Những vấn đề thường xảy ra trong quá trình quản lý thanh toán là gì?
 
-* Tiêu chí nào được dùng để xác định tài xế phù hợp?
-* Hệ thống ưu tiên khoảng cách gần, thời gian đến dự kiến hay kinh nghiệm tài xế?
-* Nếu nhiều tài xế cùng phù hợp thì hệ thống chọn tài xế nào?
-* Tài xế có bao nhiêu thời gian để phản hồi yêu cầu chuyến?
-* Nếu tài xế từ chối hoặc không phản hồi thì hệ thống sẽ tìm tài xế tiếp theo như thế nào?
+### 4. Khó mở rộng hệ thống
+- Hệ thống hiện tại gặp vấn đề gì khi số lượng khách hàng và tài xế tăng cao?
+- Doanh nghiệp dự kiến hệ thống mới phải phục vụ bao nhiêu khách hàng và tài xế?
 
-## 3. Hủy chuyến
+### 5. Chưa xác định rõ tiêu chí phân công tài xế
+- Hệ thống sẽ ưu tiên tài xế dựa trên những tiêu chí nào?
+- Khi có nhiều tài xế cùng phù hợp thì hệ thống sẽ lựa chọn tài xế nào?
 
-* Khách hàng có thể hủy chuyến ở những trạng thái nào?
-* Tài xế có được phép hủy chuyến không?
-* Khi hủy chuyến có phát sinh phí hay không?
-* Trường hợp tài xế hủy chuyến thì hệ thống xử lý như thế nào?
-* Có giới hạn số lần hủy hoặc quy định xử lý khách hàng/tài xế hủy nhiều lần không?
+### 6. Chưa xác định thời gian tài xế phản hồi
+- Tài xế có bao nhiêu thời gian để chấp nhận hoặc từ chối chuyến?
+- Nếu tài xế không phản hồi thì hệ thống sẽ xử lý như thế nào?
 
-## 4. Thanh toán
+### 7. Chưa xác định chính sách hủy chuyến
+- Khách hàng và tài xế được phép hủy chuyến trong những trường hợp nào?
+- Hủy chuyến có phát sinh phí hay không?
+- Nếu tài xế hủy chuyến thì hệ thống có tự động tìm tài xế khác không?
 
-* Doanh nghiệp muốn tích hợp với nhà cung cấp thanh toán nào?
-* Những phương thức thanh toán điện tử nào được hỗ trợ?
-* Khi thanh toán thất bại, khách hàng được phép thử lại bao nhiêu lần?
-* Nếu thanh toán thất bại nhưng tiền đã bị trừ thì hệ thống xử lý như thế nào?
-* Khi nào giao dịch được xác định là thành công hoặc thất bại?
+### 8. Chưa xác định cách tính cước
+- Giá chuyến xe được tính dựa trên những yếu tố nào?
+- Có áp dụng giá cao điểm hoặc phụ phí trong một số trường hợp không?
 
-## 5. Mất kết nối và lỗi hệ thống
+### 9. Chưa xác định cách xử lý khi mất kết nối
+- Nếu khách hàng hoặc tài xế mất kết nối trong quá trình thực hiện chuyến thì hệ thống xử lý như thế nào?
+- Nếu mất kết nối trong lúc thanh toán thì trạng thái giao dịch được xử lý ra sao?
 
-* Nếu khách hàng hoặc tài xế mất kết nối mạng trong lúc đang thực hiện chuyến thì hệ thống xử lý như thế nào?
-* Nếu tài xế mất kết nối trong khi đang di chuyển, trạng thái chuyến được cập nhật ra sao?
-* Nếu hệ thống không thể gửi thông báo thì có cơ chế gửi lại không?
-* Nếu dịch vụ thanh toán hoặc thông báo bên ngoài bị lỗi, hệ thống CAB có tiếp tục hoạt động không?
-
-## 6. Thông báo
-
-* Hệ thống hiện cần hỗ trợ những kênh thông báo nào?
-* Khi nào khách hàng và tài xế bắt buộc phải nhận thông báo?
-* Nếu người dùng không nhận được thông báo thì hệ thống có gửi lại không?
-* Doanh nghiệp có muốn bổ sung SMS, Email, Push Notification hoặc các kênh khác trong tương lai không?
-
-## 7. Quản lý vị trí tài xế
-
-* Hệ thống cập nhật vị trí tài xế với tần suất bao lâu?
-* Vị trí của tài xế được lưu trong bao lâu?
-* Ai được phép xem dữ liệu vị trí tài xế?
-
+### 10. Chưa xác định thời gian lưu trữ dữ liệu
+- Dữ liệu khách hàng, tài xế, vị trí và giao dịch cần được lưu trữ trong bao lâu?
+- Những dữ liệu nào cần được lưu lâu dài để phục vụ báo cáo và kiểm tra?
 ## Mục tiêu của nghiệp vụ
 
 * Đáp ứng nhu cầu **đặt xe của số lượng lớn khách hàng**.
