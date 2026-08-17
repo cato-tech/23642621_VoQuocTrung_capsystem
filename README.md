@@ -51,6 +51,18 @@
 * Vị trí của tài xế được lưu trong bao lâu?
 * Ai được phép xem dữ liệu vị trí tài xế?
 
+## Mục tiêu của nghiệp vụ
+
+* Đáp ứng nhu cầu **đặt xe của số lượng lớn khách hàng**.
+* Tự động hóa quá trình **tìm kiếm và phân công tài xế**, giảm sự phụ thuộc vào thao tác thủ công.
+* Hỗ trợ khách hàng **đặt xe, theo dõi trạng thái chuyến đi và xem thông tin tài xế**.
+* Hỗ trợ **thanh toán bằng hai hình thức: tiền mặt và thanh toán điện tử**.
+* Quản lý tập trung thông tin **khách hàng, tài xế, phương tiện, chuyến đi và giao dịch**.
+* Hỗ trợ nhân viên vận hành **theo dõi, quản lý và xử lý các vấn đề phát sinh trong chuyến đi**.
+* Cung cấp dữ liệu và báo cáo để **đánh giá hiệu quả hoạt động và doanh thu**.
+* Đảm bảo hệ thống **ổn định, bảo mật và có khả năng mở rộng** khi số lượng người dùng tăng.
+* Tạo nền tảng linh hoạt để **bổ sung dịch vụ, phương thức thanh toán và kênh thông báo mới trong tương lai**.
+
 ## Stakeholders
 
 | Stakeholder | Vai trò / trách nhiệm |
