@@ -147,58 +147,33 @@ Các chức năng sau chưa được ưu tiên trong giai đoạn 7 tuần:
 ### 4. Mục tiêu phạm vi trong 7 tuần
 
 Hoàn thành một phiên bản **MVP** có thể vận hành được toàn bộ quy trình đặt xe cơ bản, đồng thời có kiến trúc đủ linh hoạt để phát triển thêm các chức năng trong các giai đoạn tiếp theo.
+
+### 4. Mục tiêu phạm vi trong 7 tuần
+
+Hoàn thành một phiên bản **MVP** có thể vận hành toàn bộ quy trình đặt xe cơ bản, đồng thời có kiến trúc đủ linh hoạt để phát triển thêm các chức năng trong các giai đoạn tiếp theo.
+
 ## Business Requirements – Yêu cầu nghiệp vụ
 
-### BR01 – Hỗ trợ đặt xe trực tuyến
-Hệ thống phải cho phép khách hàng tạo và quản lý yêu cầu đặt xe trực tuyến, từ điểm đón đến điểm đến và lựa chọn loại xe phù hợp.
-
-### BR02 – Tự động tìm kiếm và phân công tài xế
-Hệ thống phải tự động tìm kiếm và phân công tài xế phù hợp dựa trên vị trí, trạng thái sẵn sàng và các tiêu chí vận hành của doanh nghiệp.
-
-### BR03 – Đảm bảo khả năng tiếp tục tìm tài xế
-Khi tài xế được đề xuất từ chối hoặc không phản hồi, hệ thống phải tiếp tục tìm tài xế khác mà không yêu cầu khách hàng tạo lại yêu cầu đặt xe.
-
-### BR04 – Theo dõi chuyến đi
-Hệ thống phải cho phép khách hàng theo dõi trạng thái chuyến đi và các thông tin liên quan từ khi đặt xe đến khi chuyến hoàn thành.
-
-### BR05 – Quản lý tài xế và phương tiện
-Hệ thống phải hỗ trợ doanh nghiệp quản lý thông tin tài xế, phương tiện và trạng thái hoạt động của tài xế.
-
-### BR06 – Quản lý chuyến đi
-Hệ thống phải quản lý toàn bộ vòng đời của chuyến đi, bao gồm tạo yêu cầu, tìm tài xế, nhận chuyến, thực hiện chuyến, hoàn thành hoặc hủy chuyến.
-
-### BR07 – Tính cước và thanh toán
-Hệ thống phải xác định số tiền khách hàng cần thanh toán dựa trên loại dịch vụ và thông tin chuyến đi.
-
-### BR08 – Hỗ trợ nhiều hình thức thanh toán
-Hệ thống phải hỗ trợ thanh toán bằng tiền mặt và thanh toán điện tử thông qua nhà cung cấp thanh toán bên ngoài.
-
-### BR09 – Quản lý thông báo
-Hệ thống phải cung cấp thông báo cho khách hàng và tài xế về các sự kiện quan trọng trong quá trình đặt và thực hiện chuyến đi.
-
-### BR10 – Quản lý vận hành
-Hệ thống phải cung cấp giao diện quản trị để nhân viên vận hành quản lý khách hàng, tài xế, phương tiện và chuyến đi.
-
-### BR11 – Hỗ trợ xử lý sự cố
-Hệ thống phải cho phép nhân viên vận hành theo dõi và hỗ trợ xử lý các trường hợp chuyến đi hoặc giao dịch gặp vấn đề.
-
-### BR12 – Báo cáo và theo dõi hoạt động
-Hệ thống phải cung cấp báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế.
-
-### BR13 – Đảm bảo bảo mật
-Hệ thống phải bảo vệ thông tin cá nhân, thông tin phương tiện, dữ liệu vị trí và dữ liệu giao dịch của người dùng.
-
-### BR14 – Kiểm soát quyền truy cập
-Hệ thống phải phân quyền người dùng và nhân viên để đảm bảo các chức năng quản trị nhạy cảm chỉ được thực hiện bởi người có quyền.
-
-### BR15 – Ghi nhận lịch sử hoạt động
-Hệ thống phải lưu vết các thao tác quan trọng để phục vụ kiểm tra, giám sát và xử lý sự cố.
-
-### BR16 – Đảm bảo khả năng mở rộng
-Hệ thống phải có khả năng phục vụ số lượng lớn khách hàng và tài xế, đồng thời cho phép các thành phần được mở rộng độc lập khi nhu cầu tăng.
-
-### BR17 – Đảm bảo tính liên tục của dịch vụ
-Hệ thống phải hạn chế ảnh hưởng khi một thành phần như thanh toán hoặc thông báo gặp lỗi, không để lỗi của một thành phần làm ngừng toàn bộ chức năng đặt xe.
+| ID | Yêu cầu nghiệp vụ | Mô tả |
+|---|---|---|
+| **BR01** | Hỗ trợ đặt xe trực tuyến | Cho phép khách hàng tạo và quản lý yêu cầu đặt xe, nhập điểm đón, điểm đến và lựa chọn loại xe. |
+| **BR02** | Tự động tìm kiếm và phân công tài xế | Tự động tìm và phân công tài xế phù hợp dựa trên vị trí, trạng thái sẵn sàng và tiêu chí vận hành. |
+| **BR03** | Tiếp tục tìm tài xế | Khi tài xế từ chối hoặc không phản hồi, hệ thống tiếp tục tìm tài xế khác mà không yêu cầu khách hàng đặt lại. |
+| **BR04** | Theo dõi chuyến đi | Cho phép khách hàng theo dõi trạng thái và thông tin chuyến đi từ lúc đặt xe đến khi hoàn thành. |
+| **BR05** | Quản lý tài xế và phương tiện | Hỗ trợ quản lý thông tin tài xế, phương tiện và trạng thái hoạt động của tài xế. |
+| **BR06** | Quản lý chuyến đi | Quản lý toàn bộ vòng đời chuyến đi: tạo yêu cầu, tìm tài xế, nhận chuyến, thực hiện, hoàn thành hoặc hủy chuyến. |
+| **BR07** | Tính cước và thanh toán | Xác định số tiền khách hàng cần thanh toán dựa trên loại dịch vụ và thông tin chuyến đi. |
+| **BR08** | Hỗ trợ nhiều hình thức thanh toán | Hỗ trợ thanh toán bằng tiền mặt và thanh toán điện tử thông qua nhà cung cấp bên ngoài. |
+| **BR09** | Quản lý thông báo | Gửi thông báo cho khách hàng và tài xế về các sự kiện quan trọng trong quá trình đặt và thực hiện chuyến đi. |
+| **BR10** | Quản lý vận hành | Cung cấp giao diện quản trị để nhân viên vận hành quản lý khách hàng, tài xế, phương tiện và chuyến đi. |
+| **BR11** | Hỗ trợ xử lý sự cố | Cho phép nhân viên vận hành theo dõi và hỗ trợ xử lý các vấn đề liên quan đến chuyến đi hoặc giao dịch. |
+| **BR12** | Báo cáo và theo dõi hoạt động | Cung cấp báo cáo về số chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế. |
+| **BR13** | Đảm bảo bảo mật | Bảo vệ thông tin cá nhân, thông tin phương tiện, dữ liệu vị trí và dữ liệu giao dịch. |
+| **BR14** | Kiểm soát quyền truy cập | Phân quyền người dùng và nhân viên, đảm bảo các chức năng quản trị nhạy cảm chỉ được thực hiện bởi người có quyền. |
+| **BR15** | Ghi nhận lịch sử hoạt động | Lưu vết các thao tác quan trọng để phục vụ kiểm tra, giám sát và xử lý sự cố. |
+| **BR16** | Đảm bảo khả năng mở rộng | Có khả năng phục vụ số lượng lớn khách hàng và tài xế, đồng thời cho phép mở rộng độc lập các thành phần khi nhu cầu tăng. |
+| **BR17** | Đảm bảo tính liên tục của dịch vụ | Hạn chế ảnh hưởng khi một thành phần như thanh toán hoặc thông báo gặp lỗi, tránh làm gián đoạn toàn bộ chức năng đặt xe. |
+| **BR18** | Hỗ trợ phát triển trong tương lai | Cho phép bổ sung loại dịch vụ, phương thức thanh toán, nhà cung cấp thông báo và thay đổi thành phần kỹ thuật mà không cần xây dựng lại toàn bộ hệ thống. |
 
 ### BR18 – Hỗ trợ phát triển trong tương lai
 Hệ thống phải có khả năng bổ sung loại dịch vụ mới, phương thức thanh toán mới, nhà cung cấp thông báo mới và thay đổi các thành phần kỹ thuật mà không phải xây dựng lại toàn bộ hệ thống.
