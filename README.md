@@ -147,3 +147,17 @@ Các chức năng sau chưa được ưu tiên trong giai đoạn 7 tuần:
 ### 4. Mục tiêu phạm vi trong 7 tuần
 
 Hoàn thành một phiên bản **MVP** có thể vận hành được toàn bộ quy trình đặt xe cơ bản, đồng thời có kiến trúc đủ linh hoạt để phát triển thêm các chức năng trong các giai đoạn tiếp theo.
+
+Hệ thống phải phân quyền người dùng và nhân viên để đảm bảo các chức năng quản trị nhạy cảm chỉ được thực hiện bởi người có quyền.
+
+### BR15 – Ghi nhận lịch sử hoạt động
+Hệ thống phải lưu vết các thao tác quan trọng để phục vụ kiểm tra, giám sát và xử lý sự cố.
+
+### BR16 – Đảm bảo khả năng mở rộng
+Hệ thống phải có khả năng phục vụ số lượng lớn khách hàng và tài xế, đồng thời cho phép các thành phần được mở rộng độc lập khi nhu cầu tăng.
+
+### BR17 – Đảm bảo tính liên tục của dịch vụ
+Hệ thống phải hạn chế ảnh hưởng khi một thành phần như thanh toán hoặc thông báo gặp lỗi, không để lỗi của một thành phần làm ngừng toàn bộ chức năng đặt xe.
+
+### BR18 – Hỗ trợ phát triển trong tương lai
+Hệ thống phải có khả năng bổ sung loại dịch vụ mới, phương thức thanh toán mới, nhà cung cấp thông báo mới và thay đổi các thành phần kỹ thuật mà không phải xây dựng lại toàn bộ hệ thống.
