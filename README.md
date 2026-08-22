@@ -113,40 +113,52 @@
 </tr>
 </table>
 
-## Phạm vi dự án
+## Phạm vi dự án trong 7 tuần
 
-Dự án CAB System được triển khai trong **7 tuần**, tập trung xây dựng các chức năng cốt lõi của nền tảng đặt xe và đảm bảo quy trình từ đặt xe đến hoàn thành chuyến.
+Dự án **CAB System** được thực hiện trong **7 tuần**, tập trung xây dựng phiên bản **MVP (Minimum Viable Product)** cho nền tảng đặt xe. Phạm vi ưu tiên các chức năng cốt lõi phục vụ quy trình từ khi khách hàng đặt xe đến khi chuyến đi hoàn thành và thanh toán.
 
-### 1. Trong phạm vi
+### Trong phạm vi
 
-* **Khách hàng:** Đăng ký, đăng nhập, cập nhật thông tin, đặt xe, theo dõi chuyến, xem lịch sử, thanh toán và đánh giá tài xế.
-* **Tài xế:** Quản lý hồ sơ và phương tiện, cập nhật trạng thái sẵn sàng, nhận/từ chối chuyến và cập nhật trạng thái chuyến.
-* **Nhân viên vận hành:** Quản lý khách hàng, tài xế, phương tiện, chuyến đi và hỗ trợ xử lý sự cố.
-* **Đặt xe và phân công:** Tiếp nhận yêu cầu, tìm tài xế phù hợp, ưu tiên tài xế gần khách hàng và tự động tìm tài xế khác khi tài xế từ chối hoặc không phản hồi.
-* **Thanh toán:** Tính cước và hỗ trợ thanh toán bằng **tiền mặt hoặc thanh toán điện tử** thông qua nhà cung cấp bên ngoài.
-* **Thông báo:** Gửi thông báo về yêu cầu đặt xe, tài xế nhận chuyến, tài xế đến điểm đón, hoàn thành chuyến và kết quả thanh toán.
+* **Khách hàng:** Đăng ký, đăng nhập, cập nhật thông tin, đặt xe, theo dõi chuyến đi, xem lịch sử chuyến, hủy chuyến, thanh toán và đánh giá tài xế.
+* **Tài xế:** Quản lý thông tin cá nhân và phương tiện, cập nhật trạng thái sẵn sàng, nhận hoặc từ chối chuyến, cập nhật trạng thái và hoàn thành chuyến.
+* **Đặt xe và phân công:** Tiếp nhận yêu cầu đặt xe, nhập điểm đón và điểm đến, lựa chọn loại xe, tìm tài xế phù hợp và tiếp tục tìm tài xế khác nếu tài xế từ chối hoặc không phản hồi.
+* **Quản lý chuyến đi:** Quản lý toàn bộ vòng đời chuyến đi từ lúc tạo yêu cầu, tìm tài xế, nhận chuyến, thực hiện, hoàn thành hoặc hủy chuyến.
+* **Thanh toán:** Tính cước và hỗ trợ hai hình thức thanh toán gồm **tiền mặt và thanh toán điện tử** thông qua nhà cung cấp bên ngoài.
+* **Thông báo:** Gửi thông báo về đặt xe, nhận chuyến, tài xế đến điểm đón, hoàn thành chuyến và kết quả thanh toán.
+* **Quản lý vận hành:** Cho phép nhân viên vận hành quản lý khách hàng, tài xế, phương tiện, chuyến đi và xử lý các sự cố phát sinh.
 * **Báo cáo:** Thống kê số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế.
-* **Bảo mật:** Xác thực người dùng, phân quyền nhân viên, bảo vệ dữ liệu và ghi log các thao tác quan trọng.
+* **Bảo mật:** Xác thực người dùng, phân quyền, bảo vệ dữ liệu và ghi nhận các thao tác quan trọng.
 
-### 2. Ngoài phạm vi
+### Ngoài phạm vi
 
-Các chức năng sau chưa được ưu tiên trong giai đoạn 7 tuần:
+Các chức năng sau chưa được triển khai trong phiên bản MVP của dự án:
 
 * Định giá động bằng AI/Machine Learning.
-* Hệ thống khuyến mãi, voucher và tích điểm.
+* Voucher, khuyến mãi và tích điểm.
 * Chat trực tiếp giữa khách hàng và tài xế.
-* Xây dựng hệ thống bản đồ/GPS riêng.
+* Tự xây dựng hệ thống bản đồ/GPS riêng.
 * Tích hợp nhiều nhà cung cấp thanh toán cùng lúc.
-* Tích hợp nhiều nhà cung cấp thông báo cùng lúc.
-* Các dịch vụ khác ngoài dịch vụ đặt xe cơ bản.
+* Tích hợp nhiều nhà cung cấp SMS, Email hoặc Push Notification cùng lúc.
+* Các dịch vụ vận tải khác ngoài dịch vụ đặt xe cơ bản.
 
-### 3. Quy trình nghiệp vụ cốt lõi
+### Kế hoạch thực hiện trong 7 tuần
 
-**Đặt xe → Tìm tài xế → Phân công tài xế → Thực hiện chuyến → Hoàn thành chuyến → Tính cước → Thanh toán → Đánh giá → Kết thúc**
+| Tuần       | Nội dung                                                                |
+| ---------- | ----------------------------------------------------------------------- |
+| **Tuần 1** | Khảo sát hiện trạng, xác định vấn đề, stakeholder và mục tiêu nghiệp vụ |
+| **Tuần 2** | Phân tích nghiệp vụ và xây dựng Business Requirements                   |
+| **Tuần 3** | Phân rã Functional Requirements và xây dựng Use Case                    |
+| **Tuần 4** | Đặc tả Use Case và mô hình hóa Business Process                         |
+| **Tuần 5** | Thiết kế cơ sở dữ liệu và kiến trúc hệ thống                            |
+| **Tuần 6** | Phát triển và tích hợp các chức năng cốt lõi                            |
+| **Tuần 7** | Kiểm thử, sửa lỗi, hoàn thiện tài liệu và chuẩn bị demo                 |
 
-### 4. Mục tiêu phạm vi trong 7 tuần
+### Quy trình nghiệp vụ cốt lõi
 
-Hoàn thành một phiên bản **MVP** có thể vận hành được toàn bộ quy trình đặt xe cơ bản, đồng thời có kiến trúc đủ linh hoạt để phát triển thêm các chức năng trong các giai đoạn tiếp theo.
+**Đặt xe → Tìm tài xế → Phân công tài xế → Nhận chuyến → Thực hiện chuyến → Hoàn thành → Tính cước → Thanh toán → Đánh giá**
+
+Mục tiêu cuối cùng của phạm vi 7 tuần là hoàn thành một phiên bản **MVP** có thể vận hành được quy trình đặt xe cơ bản và làm nền tảng để phát triển thêm các chức năng trong tương lai.
+
 
 ## Business Requirements – Yêu cầu nghiệp vụ
 
@@ -188,97 +200,3 @@ Hoàn thành một phiên bản **MVP** có thể vận hành được toàn b�
 | **FR11** | Xử lý sự cố | Hệ thống cho phép nhân viên vận hành theo dõi và hỗ trợ xử lý các trường hợp chuyến đi hoặc giao dịch gặp vấn đề. |
 | **FR12** | Báo cáo và theo dõi hoạt động | Hệ thống cung cấp báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế. |
 
-flowchart LR
-
-    %% ================= ACTORS =================
-    Customer["👤 Khách hàng"]
-    Driver["🚗 Tài xế"]
-    Staff["👨‍💼 Nhân viên vận hành"]
-    Manager["👨‍💼 Quản lý vận hành"]
-    Admin["🏢 Ban Giám đốc"]
-
-    Payment["💳 Nhà cung cấp<br/>thanh toán"]
-    Notification["🔔 Nhà cung cấp<br/>dịch vụ thông báo"]
-
-    %% ================= SYSTEM =================
-    subgraph System["HỆ THỐNG ĐẶT XE"]
-
-        UC01(["Đăng ký / Đăng nhập"])
-        UC02(["Đặt xe"])
-        UC03(["Theo dõi chuyến đi"])
-        UC04(["Thanh toán"])
-        UC05(["Đánh giá tài xế"])
-
-        UC06(["Nhận / Từ chối chuyến"])
-        UC07(["Cập nhật trạng thái chuyến"])
-        UC08(["Cập nhật vị trí"])
-        UC09(["Hoàn thành chuyến"])
-
-        UC10(["Tìm kiếm tài xế"])
-        UC11(["Phân công tài xế"])
-        UC12(["Tiếp tục tìm tài xế"])
-
-        UC13(["Quản lý khách hàng"])
-        UC14(["Quản lý tài xế"])
-        UC15(["Quản lý phương tiện"])
-        UC16(["Quản lý chuyến đi"])
-        UC17(["Xử lý sự cố"])
-
-        UC18(["Tính cước"])
-        UC19(["Gửi thông báo"])
-
-        UC20(["Xem báo cáo"])
-        UC21(["Theo dõi hoạt động"])
-    end
-
-    %% ================= CUSTOMER =================
-    Customer --> UC01
-    Customer --> UC02
-    Customer --> UC03
-    Customer --> UC04
-    Customer --> UC05
-
-    %% ================= DRIVER =================
-    Driver --> UC06
-    Driver --> UC07
-    Driver --> UC08
-    Driver --> UC09
-
-    %% ================= OPERATIONS =================
-    Staff --> UC13
-    Staff --> UC14
-    Staff --> UC15
-    Staff --> UC16
-    Staff --> UC17
-
-    %% ================= MANAGER =================
-    Manager --> UC16
-    Manager --> UC17
-    Manager --> UC20
-    Manager --> UC21
-
-    %% ================= MANAGEMENT =================
-    Admin --> UC20
-    Admin --> UC21
-
-    %% ================= EXTERNAL SYSTEMS =================
-    Payment --> UC04
-    Notification --> UC19
-
-    %% ================= RELATIONSHIPS =================
-    UC02 -.->|include| UC10
-    UC10 -.->|include| UC11
-    UC11 -.->|include| UC06
-    UC12 -.->|extend| UC10
-
-    UC02 -.->|include| UC18
-    UC04 -.->|include| UC18
-    UC03 -.->|include| UC07
-    UC03 -.->|include| UC08
-
-    UC06 -.->|include| UC19
-    UC07 -.->|include| UC19
-    UC09 -.->|include| UC19
-
-    %% ================= STYLE =================
-    style System fill:#f8fafc,stroke:#334155,stroke-width:3px
