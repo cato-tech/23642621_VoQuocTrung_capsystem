@@ -200,3 +200,4 @@ Mục tiêu cuối cùng của phạm vi 7 tuần là hoàn thành một phiên 
 | **FR11** | Xử lý sự cố | Hệ thống cho phép nhân viên vận hành theo dõi và hỗ trợ xử lý các trường hợp chuyến đi hoặc giao dịch gặp vấn đề. |
 | **FR12** | Báo cáo và theo dõi hoạt động | Hệ thống cung cấp báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế. |
 
+![Use Case Diagram](images/1787044358233_200208010526605605_7442673884015635115_b8c89839e25e57fd66429b7dc4a1f6a2%20(1).jpg)
