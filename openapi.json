@@ -1,574 +1,698 @@
+openapi: 3.0.0
+info:
+  title: CAB System - Ride-Hailing Platform API
+  description: Đặc tả API hoàn chỉnh cho nền tảng đặt xe trực tuyến (CAB System) theo chuẩn 12 Yêu cầu chức năng (FR01 - FR12) phục vụ Khách hàng, Tài xế và Nhân viên vận hành.
+  version: 1.0.0
+  contact:
+    name: CAB System Engineering Team
 
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "CAB System - Ride-Hailing Platform API",
-    "description": "Đặc tả API hệ thống đặt xe trực tuyến (CAB System) phục vụ 3 nhóm tác nhân: Khách hàng (Customer), Tài xế (Driver) và Nhân viên vận hành (Admin/Operator).",
-    "version": "1.0.0",
-    "contact": {
-      "name": "CAB System Engineering Team"
-    }
-  },
-  "servers": [
-    {
-      "url": "https://api.cabsystem.local/api/v1",
-      "description": "Development / Staging Server"
-    }
-  ],
-  "paths": {
-    "/auth/register": {
-      "post": {
-        "tags": ["Authentication"],
-        "summary": "Đăng ký tài khoản (Khách hàng / Tài xế)",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Đăng ký thành công",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Số điện thoại hoặc email đã tồn tại",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "tags": ["Authentication"],
-        "summary": "Đăng nhập hệ thống (Lấy JWT Access Token)",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Đăng nhập thành công",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Sai thông tin đăng nhập",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rides": {
-      "post": {
-        "tags": ["Customer - Rides"],
-        "summary": "Khách hàng tạo yêu cầu đặt chuyến đi",
-        "security": [{ "BearerAuth": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateRideRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Tạo yêu cầu thành công, hệ thống bắt đầu tìm tài xế",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RideResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Thông tin điểm đón/trả hoặc loại xe không hợp lệ",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/rides/{id}": {
-      "get": {
-        "tags": ["Customer - Rides"],
-        "summary": "Theo dõi trạng thái chi tiết của chuyến đi theo thời gian thực",
-        "security": [{ "BearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "Mã chuyến đi (Ride ID)"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lấy thông tin chuyến đi thành công",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RideDetailResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Không tìm thấy chuyến đi"
-          }
-        }
-      }
-    },
-    "/rides/{id}/cancel": {
-      "post": {
-        "tags": ["Customer - Rides"],
-        "summary": "Khách hàng hủy chuyến đi",
-        "security": [{ "BearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "reason": { "type": "string", "example": "Thay đổi lịch trình cá nhân" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Hủy chuyến thành công"
-          }
-        }
-      }
-    },
-    "/rides/{id}/feedback": {
-      "post": {
-        "tags": ["Customer - Rides"],
-        "summary": "Khách hàng đánh giá và gửi phản hồi sau khi hoàn thành chuyến",
-        "security": [{ "BearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["rating"],
-                "properties": {
-                  "rating": { "type": "integer", "minimum": 1, "maximum": 5, "example": 5 },
-                  "comment": { "type": "string", "example": "Tài xế lái xe cẩn thận, lịch sự" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Đánh giá thành công"
-          }
-        }
-      }
-    },
-    "/driver/status": {
-      "patch": {
-        "tags": ["Driver - Operations"],
-        "summary": "Tài xế bật/tắt trạng thái sẵn sàng nhận chuyến",
-        "security": [{ "BearerAuth": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["status"],
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": ["ONLINE", "OFFLINE", "BUSY"],
-                    "example": "ONLINE"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Cập nhật trạng thái hoạt động thành công"
-          }
-        }
-      }
-    },
-    "/driver/location": {
-      "post": {
-        "tags": ["Driver - Operations"],
-        "summary": "Cập nhật tọa độ GPS định kỳ của tài xế",
-        "security": [{ "BearerAuth": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LocationUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Cập nhật vị trí thành công"
-          }
-        }
-      }
-    },
-    "/driver/rides/{id}/response": {
-      "post": {
-        "tags": ["Driver - Operations"],
-        "summary": "Tài xế chấp nhận hoặc từ chối chuyến được đề xuất",
-        "security": [{ "BearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["action"],
-                "properties": {
-                  "action": {
-                    "type": "string",
-                    "enum": ["ACCEPT", "REJECT"],
-                    "example": "ACCEPT"
-                  },
-                  "reason": { "type": "string", "example": "Quá xa điểm đón" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Xử lý phản hồi của tài xế thành công"
-          }
-        }
-      }
-    },
-    "/driver/rides/{id}/status": {
-      "patch": {
-        "tags": ["Driver - Operations"],
-        "summary": "Tài xế cập nhật tiến trình chuyến đi",
-        "security": [{ "BearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["status"],
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": ["ARRIVED_AT_PICKUP", "PICKED_UP", "DROPPED_OFF", "COMPLETED"],
-                    "example": "ARRIVED_AT_PICKUP"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Cập nhật tiến trình thành công"
-          }
-        }
-      }
-    },
-    "/payments/checkout": {
-      "post": {
-        "tags": ["Payments"],
-        "summary": "Khởi tạo thanh toán cho chuyến đi",
-        "security": [{ "BearerAuth": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["ride_id", "payment_method"],
-                "properties": {
-                  "ride_id": { "type": "string", "example": "ride_98234" },
-                  "payment_method": {
-                    "type": "string",
-                    "enum": ["CASH", "E_WALLET", "CREDIT_CARD_GATEWAY"],
-                    "example": "E_WALLET"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Khởi tạo giao dịch thanh toán thành công",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "payment_id": { "type": "string", "example": "pay_54321" },
-                    "status": { "type": "string", "example": "PENDING" },
-                    "redirect_url": { "type": "string", "example": "https://gateway.payment.vn/pay/token123" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/rides": {
-      "get": {
-        "tags": ["Admin / Operator"],
-        "summary": "Xem danh sách và giám sát các chuyến đi đang diễn ra",
-        "security": [{ "BearerAuth": [] }],
-        "parameters": [
-          { "name": "status", "in": "query", "schema": { "type": "string" } },
-          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lấy danh sách chuyến đi thành công"
-          },
-          "403": {
-            "description": "Không có quyền quản trị viên"
-          }
-        }
-      }
-    },
-    "/admin/reports/analytics": {
-      "get": {
-        "tags": ["Admin / Operator"],
-        "summary": "Báo cáo thống kê: Doanh thu, số chuyến, tỷ lệ hủy, hiệu suất tài xế",
-        "security": [{ "BearerAuth": [] }],
-        "parameters": [
-          { "name": "from_date", "in": "query", "required": true, "schema": { "type": "string", "format": "date" } },
-          { "name": "to_date", "in": "query", "required": true, "schema": { "type": "string", "format": "date" } }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lấy báo cáo thành công",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AnalyticsReportResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "BearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
-    },
-    "schemas": {
-      "RegisterRequest": {
-        "type": "object",
-        "required": ["phone_number", "password", "full_name", "role"],
-        "properties": {
-          "phone_number": { "type": "string", "example": "0987654321" },
-          "email": { "type": "string", "example": "user@gmail.com" },
-          "password": { "type": "string", "example": "Password123@" },
-          "full_name": { "type": "string", "example": "Nguyễn Văn A" },
-          "role": { "type": "string", "enum": ["CUSTOMER", "DRIVER"], "example": "CUSTOMER" }
-        }
-      },
-      "LoginRequest": {
-        "type": "object",
-        "required": ["phone_number", "password"],
-        "properties": {
-          "phone_number": { "type": "string", "example": "0987654321" },
-          "password": { "type": "string", "example": "Password123@" }
-        }
-      },
-      "LoginResponse": {
-        "type": "object",
-        "properties": {
-          "access_token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
-          "token_type": { "type": "string", "example": "Bearer" },
-          "user_id": { "type": "string", "example": "usr_1001" },
-          "role": { "type": "string", "example": "CUSTOMER" }
-        }
-      },
-      "CreateRideRequest": {
-        "type": "object",
-        "required": ["pickup_lat", "pickup_lng", "pickup_address", "dropoff_lat", "dropoff_lng", "dropoff_address", "vehicle_type"],
-        "properties": {
-          "pickup_lat": { "type": "number", "example": 10.8231 },
-          "pickup_lng": { "type": "number", "example": 106.6872 },
-          "pickup_address": { "type": "string", "example": "12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM" },
-          "dropoff_lat": { "type": "number", "example": 10.7769 },
-          "dropoff_lng": { "type": "number", "example": 106.7009 },
-          "dropoff_address": { "type": "string", "example": "Chợ Bến Thành, Quận 1, TP.HCM" },
-          "vehicle_type": { "type": "string", "enum": ["CAB_4_SEATS", "CAB_7_SEATS"], "example": "CAB_4_SEATS" }
-        }
-      },
-      "RideResponse": {
-        "type": "object",
-        "properties": {
-          "ride_id": { "type": "string", "example": "ride_98234" },
-          "status": { "type": "string", "example": "FINDING_DRIVER" },
-          "estimated_fare": { "type": "number", "example": 125000 },
-          "created_at": { "type": "string", "format": "date-time" }
-        }
-      },
-      "RideDetailResponse": {
-        "type": "object",
-        "properties": {
-          "ride_id": { "type": "string", "example": "ride_98234" },
-          "status": {
-            "type": "string",
-            "enum": ["FINDING_DRIVER", "DRIVER_ACCEPTED", "DRIVER_ARRIVED", "IN_PROGRESS", "COMPLETED", "CANCELLED"],
-            "example": "DRIVER_ACCEPTED"
-          },
-          "driver_info": {
-            "type": "object",
-            "properties": {
-              "driver_name": { "type": "string", "example": "Trần Văn B" },
-              "phone_number": { "type": "string", "example": "0912345678" },
-              "vehicle_plate": { "type": "string", "example": "59A-123.45" },
-              "vehicle_model": { "type": "string", "example": "Toyota Vios 2024" },
-              "current_lat": { "type": "number", "example": 10.8220 },
-              "current_lng": { "type": "number", "example": 106.6850 }
-            }
-          },
-          "eta_minutes": { "type": "integer", "example": 4 },
-          "fare_amount": { "type": "number", "example": 125000 }
-        }
-      },
-      "LocationUpdate": {
-        "type": "object",
-        "required": ["lat", "lng"],
-        "properties": {
-          "lat": { "type": "number", "example": 10.8225 },
-          "lng": { "type": "number", "example": 106.6860 },
-          "heading": { "type": "number", "example": 180.5 }
-        }
-      },
-      "AnalyticsReportResponse": {
-        "type": "object",
-        "properties": {
-          "total_rides": { "type": "integer", "example": 1540 },
-          "completed_rides": { "type": "integer", "example": 1420 },
-          "cancelled_rides": { "type": "integer", "example": 120 },
-          "cancellation_rate": { "type": "number", "example": 7.79 },
-          "total_revenue": { "type": "number", "example": 185000000 },
-          "active_drivers": { "type": "integer", "example": 85 }
-        }
-      },
-      "ApiResponse": {
-        "type": "object",
-        "properties": {
-          "success": { "type": "boolean", "example": true },
-          "message": { "type": "string", "example": "Thao tác thành công" }
-        }
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "success": { "type": "boolean", "example": false },
-          "error": {
-            "type": "object",
-            "properties": {
-              "code": { "type": "string", "example": "RESOURCE_NOT_FOUND" },
-              "message": { "type": "string", "example": "Mô tả chi tiết lỗi" }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+servers:
+  - url: https://api.cabsystem.local/api/v1
+    description: Máy chủ thử nghiệm (Local / Development)
+
+paths:
+  # ==========================================
+  # AUTHENTICATION (BẢO MẬT & XÁC THỰC)
+  # ==========================================
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Đăng ký tài khoản (Khách hàng / Tài xế)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone_number
+                - password
+                - full_name
+                - role
+              properties:
+                phone_number:
+                  type: string
+                  example: "0987654321"
+                email:
+                  type: string
+                  example: "user@example.com"
+                password:
+                  type: string
+                  example: "Password123@"
+                full_name:
+                  type: string
+                  example: "Nguyễn Văn A"
+                role:
+                  type: string
+                  enum: [CUSTOMER, DRIVER]
+                  example: CUSTOMER
+      responses:
+        '201':
+          description: Đăng ký thành công
+        '400':
+          description: Số điện thoại hoặc email đã tồn tại
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Đăng nhập hệ thống (Lấy JWT Access Token)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone_number
+                - password
+              properties:
+                phone_number:
+                  type: string
+                  example: "0987654321"
+                password:
+                  type: string
+                  example: "Password123@"
+      responses:
+        '200':
+          description: Đăng nhập thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  token_type:
+                    type: string
+                    example: "Bearer"
+                  user_id:
+                    type: string
+                    example: "usr_1001"
+                  role:
+                    type: string
+                    example: "CUSTOMER"
+        '401':
+          description: Sai số điện thoại hoặc mật khẩu
+
+  # ==========================================
+  # FR01: ĐẶT XE TRỰC TUYẾN
+  # ==========================================
+  /rides:
+    post:
+      tags:
+        - FR01 - Đặt xe trực tuyến
+      summary: Khách hàng tạo yêu cầu đặt xe
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - pickup_lat
+                - pickup_lng
+                - pickup_address
+                - dropoff_lat
+                - dropoff_lng
+                - dropoff_address
+                - vehicle_type
+              properties:
+                pickup_lat:
+                  type: number
+                  example: 10.8231
+                pickup_lng:
+                  type: number
+                  example: 106.6872
+                pickup_address:
+                  type: string
+                  example: "12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM"
+                dropoff_lat:
+                  type: number
+                  example: 10.7769
+                dropoff_lng:
+                  type: number
+                  example: 106.7009
+                dropoff_address:
+                  type: string
+                  example: "Chợ Bến Thành, Quận 1, TP.HCM"
+                vehicle_type:
+                  type: string
+                  enum: [CAB_4_SEATS, CAB_7_SEATS]
+                  example: CAB_4_SEATS
+      responses:
+        '201':
+          description: Tiếp nhận yêu cầu thành công, hệ thống tìm tài xế
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ride_id:
+                    type: string
+                    example: "ride_101"
+                  status:
+                    type: string
+                    example: "REQUESTED"
+                  created_at:
+                    type: string
+                    format: date-time
+
+  # ==========================================
+  # FR02: TÌM KIẾM VÀ PHÂN CÔNG TÀI XẾ
+  # ==========================================
+  /dispatch/find-driver:
+    post:
+      tags:
+        - FR02 - Phân công tài xế
+      summary: Hệ thống điều phối quét và gán cuốc xe cho tài xế gần nhất
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ride_id
+              properties:
+                ride_id:
+                  type: string
+                  example: "ride_101"
+                max_radius_km:
+                  type: number
+                  default: 5.0
+                  example: 3.5
+      responses:
+        '200':
+          description: Đã tìm được tài xế phù hợp và gửi đề xuất cuốc xe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ride_id:
+                    type: string
+                    example: "ride_101"
+                  assigned_driver_id:
+                    type: string
+                    example: "drv_55"
+                  status:
+                    type: string
+                    example: "OFFERED"
+
+  # ==========================================
+  # FR03: TIẾP TỤC TÌM TÀI XẾ
+  # ==========================================
+  /dispatch/re-find-driver:
+    post:
+      tags:
+        - FR03 - Tiếp tục tìm tài xế
+      summary: Chuyển cuốc xe sang tài xế kế tiếp khi tài xế trước từ chối hoặc quá giờ phản hồi
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ride_id
+                - rejected_driver_id
+              properties:
+                ride_id:
+                  type: string
+                  example: "ride_101"
+                rejected_driver_id:
+                  type: string
+                  example: "drv_55"
+                reason:
+                  type: string
+                  enum: [DRIVER_REJECTED, TIMEOUT_NO_RESPONSE]
+                  example: DRIVER_REJECTED
+      responses:
+        '200':
+          description: Đã gán cuốc xe sang tài xế kế tiếp
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ride_id:
+                    type: string
+                    example: "ride_101"
+                  new_driver_id:
+                    type: string
+                    example: "drv_89"
+                  status:
+                    type: string
+                    example: "OFFERED"
+        '404':
+          description: Đã quét hết bán kính nhưng không còn tài xế nào khả dụng
+
+  # ==========================================
+  # FR04: THEO DÕI CHUYẾN ĐI
+  # ==========================================
+  /rides/{id}/tracking:
+    get:
+      tags:
+        - FR04 - Theo dõi chuyến đi
+      summary: Khách hàng theo dõi vị trí tài xế và thời gian đón dự kiến (ETA)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Mã chuyến đi
+      responses:
+        '200':
+          description: Tọa độ và trạng thái thời gian thực của chuyến đi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ride_id:
+                    type: string
+                    example: "ride_101"
+                  status:
+                    type: string
+                    example: "DRIVER_ARRIVING"
+                  driver_location:
+                    type: object
+                    properties:
+                      lat:
+                        type: number
+                        example: 10.8220
+                      lng:
+                        type: number
+                        example: 106.6850
+                  eta_minutes:
+                    type: integer
+                    example: 4
+
+  # ==========================================
+  # FR05: QUẢN LÝ TÀI XẾ VÀ PHƯƠNG TIỆN
+  # ==========================================
+  /drivers/profile:
+    put:
+      tags:
+        - FR05 - Quản lý tài xế & xe
+      summary: Cập nhật thông tin phương tiện và hồ sơ tài xế
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                license_plate:
+                  type: string
+                  example: "59A-999.88"
+                car_brand:
+                  type: string
+                  example: "Toyota"
+                car_model:
+                  type: string
+                  example: "Vios 2024"
+      responses:
+        '200':
+          description: Cập nhật thông tin phương tiện thành công
+
+  /drivers/status:
+    patch:
+      tags:
+        - FR05 - Quản lý tài xế & xe
+      summary: Bật/tắt trạng thái sẵn sàng nhận chuyến (ONLINE/OFFLINE/BUSY)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum: [ONLINE, OFFLINE, BUSY]
+                  example: ONLINE
+      responses:
+        '200':
+          description: Cập nhật trạng thái hoạt động thành công
+
+  # ==========================================
+  # FR06: QUẢN LÝ VÒNG ĐỜI CHUYẾN ĐI
+  # ==========================================
+  /rides/{id}/status:
+    patch:
+      tags:
+        - FR06 - Quản lý vòng đời chuyến đi
+      summary: Tài xế cập nhật tiến trình cuốc xe (Đã đến, Đã đón, Hoàn thành)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - trip_status
+              properties:
+                trip_status:
+                  type: string
+                  enum: [ARRIVED_PICKUP, PICKED_UP, IN_TRANSIT, COMPLETED]
+                  example: PICKED_UP
+      responses:
+        '200':
+          description: Cập nhật trạng thái tiến trình thành công
+
+  /rides/{id}/cancel:
+    post:
+      tags:
+        - FR06 - Quản lý vòng đời chuyến đi
+      summary: Hủy chuyến đi (Bởi khách hàng hoặc tài xế)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - reason
+              properties:
+                reason:
+                  type: string
+                  example: "Thời gian chờ đón quá lâu"
+      responses:
+        '200':
+          description: Hủy chuyến thành công
+
+  # ==========================================
+  # FR07: TÍNH CƯỚC
+  # ==========================================
+  /pricing/calculate:
+    post:
+      tags:
+        - FR07 - Tính cước chuyến đi
+      summary: Tính giá cước dự kiến hoặc cước chốt theo quãng đường thực tế
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - distance_km
+                - vehicle_type
+              properties:
+                distance_km:
+                  type: number
+                  example: 8.5
+                duration_minutes:
+                  type: integer
+                  example: 22
+                vehicle_type:
+                  type: string
+                  enum: [CAB_4_SEATS, CAB_7_SEATS]
+                  example: CAB_4_SEATS
+      responses:
+        '200':
+          description: Tính cước thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  base_fare:
+                    type: number
+                    example: 20000
+                  distance_fare:
+                    type: number
+                    example: 85000
+                  total_fare:
+                    type: number
+                    example: 105000
+
+  # ==========================================
+  # FR08: XỬ LÝ THANH TOÁN
+  # ==========================================
+  /payments/process:
+    post:
+      tags:
+        - FR08 - Xử lý thanh toán
+      summary: Xử lý thu tiền chuyến đi (Tiền mặt hoặc qua Cổng thanh toán)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ride_id
+                - amount
+                - method
+              properties:
+                ride_id:
+                  type: string
+                  example: "ride_101"
+                amount:
+                  type: number
+                  example: 105000
+                method:
+                  type: string
+                  enum: [CASH, E_WALLET, BANK_TRANSFER]
+                  example: E_WALLET
+      responses:
+        '200':
+          description: Giao dịch hoàn tất hoặc trả về URL thanh toán
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_id:
+                    type: string
+                    example: "txn_7761"
+                  status:
+                    type: string
+                    example: "SUCCESS"
+                  payment_url:
+                    type: string
+                    example: "https://gateway.pay.vn/checkout?token=abc"
+
+  # ==========================================
+  # FR09: QUẢN LÝ THÔNG BÁO
+  # ==========================================
+  /notifications/send:
+    post:
+      tags:
+        - FR09 - Quản lý thông báo
+      summary: Gửi Push Notification / SMS thông báo sự kiện chuyến đi
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - recipient_id
+                - title
+                - body
+              properties:
+                recipient_id:
+                  type: string
+                  example: "usr_1001"
+                channel:
+                  type: string
+                  enum: [PUSH_NOTIFICATION, SMS, EMAIL]
+                  example: PUSH_NOTIFICATION
+                title:
+                  type: string
+                  example: "Tài xế đã đến nơi"
+                body:
+                  type: string
+                  example: "Tài xế đang đợi bạn ở sảnh đón."
+      responses:
+        '200':
+          description: Gửi thông báo thành công
+
+  # ==========================================
+  # FR10: QUẢN LÝ VẬN HÀNH
+  # ==========================================
+  /operations/rides:
+    get:
+      tags:
+        - FR10 - Quản lý vận hành
+      summary: Giám sát toàn bộ các chuyến đi đang hoạt động trong hệ thống
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Danh sách cuốc xe hệ thống
+
+  /operations/drivers/{id}/verify:
+    patch:
+      tags:
+        - FR10 - Quản lý vận hành
+      summary: Phê duyệt hồ sơ tài xế và kiểm định phương tiện
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum: [APPROVED, REJECTED]
+                  example: APPROVED
+      responses:
+        '200':
+          description: Cập nhật duyệt hồ sơ thành công
+
+  # ==========================================
+  # FR11: XỬ LÝ SỰ CỐ
+  # ==========================================
+  /incidents/reports:
+    post:
+      tags:
+        - FR11 - Xử lý sự cố
+      summary: Tạo khiếu nại hoặc báo cáo sự cố (Chuyến lỗi, giao dịch lỗi)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ride_id
+                - issue_type
+                - description
+              properties:
+                ride_id:
+                  type: string
+                  example: "ride_101"
+                issue_type:
+                  type: string
+                  enum: [PAYMENT_FAILED, ACCIDENT, CUSTOMER_NO_SHOW, LOST_ITEM]
+                  example: PAYMENT_FAILED
+                description:
+                  type: string
+                  example: "Khách đã trừ tiền ví nhưng tài xế chưa nhận được xác nhận"
+      responses:
+        '201':
+          description: Tạo phiếu sự cố thành công
+
+  # ==========================================
+  # FR12: BÁO CÁO VÀ THEO DÕI HOẠT ĐỘNG
+  # ==========================================
+  /analytics/dashboard:
+    get:
+      tags:
+        - FR12 - Báo cáo & Phân tích
+      summary: Báo cáo tổng số chuyến, doanh thu, tỷ lệ hủy và hiệu suất tài xế
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: from_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Lấy báo cáo thống kê thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_trips:
+                    type: integer
+                    example: 1200
+                  completed_trips:
+                    type: integer
+                    example: 1150
+                  cancelled_trips:
+                    type: integer
+                    example: 50
+                  completion_rate:
+                    type: number
+                    example: 95.83
+                  total_revenue:
+                    type: number
+                    example: 150000000
+
+# ==========================================
+# CẤU HÌNH BẢO MẬT DÙNG CHUNG
+# ==========================================
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

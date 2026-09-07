@@ -1,0 +1,61 @@
+/rides:
+  post:
+    tags:
+      - FR01 - Đặt xe trực tuyến
+    summary: Khách hàng tạo yêu cầu đặt xe
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - pickup_lat
+              - pickup_lng
+              - pickup_address
+              - dropoff_lat
+              - dropoff_lng
+              - dropoff_address
+              - vehicle_type
+            properties:
+              pickup_lat:
+                type: number
+                example: 10.8231
+              pickup_lng:
+                type: number
+                example: 106.6872
+              pickup_address:
+                type: string
+                example: "12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM"
+              dropoff_lat:
+                type: number
+                example: 10.7769
+              dropoff_lng:
+                type: number
+                example: 106.7009
+              dropoff_address:
+                type: string
+                example: "Chợ Bến Thành, Quận 1, TP.HCM"
+              vehicle_type:
+                type: string
+                enum: [CAB_4_SEATS, CAB_7_SEATS]
+                example: CAB_4_SEATS
+    responses:
+      '201':
+        description: Yêu cầu đặt xe được tiếp nhận thành công
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ride_id:
+                  type: string
+                  example: "ride_101"
+                status:
+                  type: string
+                  example: "REQUESTED"
+                created_at:
+                  type: string
+                  format: date-time

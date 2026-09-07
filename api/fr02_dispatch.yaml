@@ -1,0 +1,40 @@
+/dispatch/find-driver:
+  post:
+    tags:
+      - FR02 - Tìm kiếm và phân công tài xế
+    summary: Hệ thống điều phối quét và tìm tài xế gần nhất
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - ride_id
+            properties:
+              ride_id:
+                type: string
+                example: "ride_101"
+              max_radius_km:
+                type: number
+                default: 5.0
+                example: 3.5
+    responses:
+      '200':
+        description: Đã gán và gửi thông báo cho tài xế phù hợp
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ride_id:
+                  type: string
+                  example: "ride_101"
+                assigned_driver_id:
+                  type: string
+                  example: "drv_55"
+                status:
+                  type: string
+                  example: "OFFERED"

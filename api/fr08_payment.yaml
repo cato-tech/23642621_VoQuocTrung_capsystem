@@ -1,0 +1,45 @@
+/payments/process:
+  post:
+    tags:
+      - FR08 - Xử lý thanh toán
+    summary: Xử lý thu tiền chuyến đi (Tiền mặt hoặc qua Cổng thanh toán)
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - ride_id
+              - amount
+              - method
+            properties:
+              ride_id:
+                type: string
+                example: "ride_101"
+              amount:
+                type: number
+                example: 105000
+              method:
+                type: string
+                enum: [CASH, E_WALLET, BANK_TRANSFER]
+                example: E_WALLET
+    responses:
+      '200':
+        description: Giao dịch thanh toán hoàn tất hoặc link thanh toán
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_id:
+                  type: string
+                  example: "txn_7761"
+                status:
+                  type: string
+                  example: "SUCCESS"
+                payment_url:
+                  type: string
+                  example: "https://pay.vn/checkout?token=abc"

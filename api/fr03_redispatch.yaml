@@ -1,0 +1,46 @@
+/dispatch/re-find-driver:
+  post:
+    tags:
+      - FR03 - Tiếp tục tìm tài xế
+    summary: Tự động chuyển cuốc xe sang tài xế kế tiếp khi tài xế trước từ chối/timeout
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - ride_id
+              - rejected_driver_id
+            properties:
+              ride_id:
+                type: string
+                example: "ride_101"
+              rejected_driver_id:
+                type: string
+                example: "drv_55"
+              reason:
+                type: string
+                enum: [DRIVER_REJECTED, TIMEOUT_NO_RESPONSE]
+                example: DRIVER_REJECTED
+    responses:
+      '200':
+        description: Tìm kiếm tài xế thay thế thành công
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ride_id:
+                  type: string
+                  example: "ride_101"
+                new_driver_id:
+                  type: string
+                  example: "drv_89"
+                status:
+                  type: string
+                  example: "OFFERED"
+      '404':
+        description: Không tìm thấy tài xế khả dụng quanh khu vực

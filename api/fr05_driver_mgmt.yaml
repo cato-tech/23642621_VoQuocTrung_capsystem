@@ -1,0 +1,50 @@
+/drivers/profile:
+  put:
+    tags:
+      - FR05 - Quản lý tài xế và phương tiện
+    summary: Cập nhật hồ sơ thông tin tài xế và phương tiện
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              license_plate:
+                type: string
+                example: "59A-999.88"
+              car_brand:
+                type: string
+                example: "Toyota"
+              car_model:
+                type: string
+                example: "Vios 2024"
+    responses:
+      '200':
+        description: Cập nhật phương tiện thành công
+
+/drivers/status:
+  patch:
+    tags:
+      - FR05 - Quản lý tài xế và phương tiện
+    summary: Bật/tắt trạng thái sẵn sàng làm việc (ONLINE/OFFLINE)
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status
+            properties:
+              status:
+                type: string
+                enum: [ONLINE, OFFLINE, BUSY]
+                example: ONLINE
+    responses:
+      '200':
+        description: Cập nhật trạng thái hoạt động thành công

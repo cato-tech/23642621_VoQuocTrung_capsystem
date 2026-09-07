@@ -1,0 +1,58 @@
+/rides/{id}/status:
+  patch:
+    tags:
+      - FR06 - Quản lý chuyến đi
+    summary: Cập nhật vòng đời chuyến đi (Đã đón, đang chở, hoàn thành)
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - trip_status
+            properties:
+              trip_status:
+                type: string
+                enum: [ARRIVED_PICKUP, PICKED_UP, IN_TRANSIT, COMPLETED]
+                example: PICKED_UP
+    responses:
+      '200':
+        description: Cập nhật tiến trình chuyến đi thành công
+
+/rides/{id}/cancel:
+  post:
+    tags:
+      - FR06 - Quản lý chuyến đi
+    summary: Hủy chuyến đi (Bởi khách hàng hoặc tài xế)
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - reason
+            properties:
+              reason:
+                type: string
+                example: "Khách đổi ý không muốn đi nữa"
+    responses:
+      '200':
+        description: Hủy chuyến đi thành công

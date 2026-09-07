@@ -1,0 +1,34 @@
+/notifications/send:
+  post:
+    tags:
+      - FR09 - Quản lý thông báo
+    summary: Gửi Push Notification / SMS thông báo sự kiện chuyến đi
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - recipient_id
+              - title
+              - body
+            properties:
+              recipient_id:
+                type: string
+                example: "usr_1001"
+              channel:
+                type: string
+                enum: [PUSH_NOTIFICATION, SMS, EMAIL]
+                example: PUSH_NOTIFICATION
+              title:
+                type: string
+                example: "Tài xế đã đến"
+              body:
+                type: string
+                example: "Tài xế Trần Văn B đang đợi bạn tại điểm đón."
+    responses:
+      '200':
+        description: Đã gửi thông báo thành công

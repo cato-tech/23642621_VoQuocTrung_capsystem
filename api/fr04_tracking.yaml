@@ -1,0 +1,40 @@
+/rides/{id}/tracking:
+  get:
+    tags:
+      - FR04 - Theo dõi chuyến đi
+    summary: Khách hàng theo dõi vị trí tài xế và thời gian dự kiến đón (ETA)
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Mã chuyến đi
+    responses:
+      '200':
+        description: Dữ liệu tọa độ và tiến trình thời gian thực
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ride_id:
+                  type: string
+                  example: "ride_101"
+                status:
+                  type: string
+                  example: "DRIVER_ARRIVING"
+                driver_location:
+                  type: object
+                  properties:
+                    lat:
+                      type: number
+                      example: 10.8220
+                    lng:
+                      type: number
+                      example: 106.6850
+                eta_minutes:
+                  type: integer
+                  example: 4

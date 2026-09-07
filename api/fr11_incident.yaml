@@ -1,0 +1,31 @@
+/incidents/reports:
+  post:
+    tags:
+      - FR11 - Xử lý sự cố
+    summary: Tạo phiếu hỗ trợ khi cuốc xe gặp sự cố hoặc lỗi thanh toán
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - ride_id
+              - issue_type
+              - description
+            properties:
+              ride_id:
+                type: string
+                example: "ride_101"
+              issue_type:
+                type: string
+                enum: [PAYMENT_FAILED, ACCIDENT, CUSTOMER_NO_SHOW, LOST_ITEM]
+                example: PAYMENT_FAILED
+              description:
+                type: string
+                example: "Tài khoản bị trừ tiền nhưng chuyến chưa xác nhận thanh toán"
+    responses:
+      '201':
+        description: Phiếu sự cố đã được tạo và gửi tới điều hành viên

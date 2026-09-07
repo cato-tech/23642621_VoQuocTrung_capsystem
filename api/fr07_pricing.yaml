@@ -1,0 +1,44 @@
+/pricing/calculate:
+  post:
+    tags:
+      - FR07 - Tính cước
+    summary: Tính giá cước dự kiến và giá chốt sau khi kết thúc chuyến
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - distance_km
+              - vehicle_type
+            properties:
+              distance_km:
+                type: number
+                example: 8.5
+              duration_minutes:
+                type: integer
+                example: 22
+              vehicle_type:
+                type: string
+                enum: [CAB_4_SEATS, CAB_7_SEATS]
+                example: CAB_4_SEATS
+    responses:
+      '200':
+        description: Tính cước phí thành công
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                base_fare:
+                  type: number
+                  example: 20000
+                distance_fare:
+                  type: number
+                  example: 85000
+                total_fare:
+                  type: number
+                  example: 105000

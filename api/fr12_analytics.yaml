@@ -1,0 +1,43 @@
+/analytics/dashboard:
+  get:
+    tags:
+      - FR12 - Báo cáo và theo dõi hoạt động
+    summary: Lấy dữ liệu báo cáo doanh thu, số chuyến và hiệu suất tài xế
+    security:
+      - BearerAuth: []
+    parameters:
+      - name: from_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: to_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+    responses:
+      '200':
+        description: Báo cáo phân tích kinh doanh
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                total_trips:
+                  type: integer
+                  example: 1200
+                completed_trips:
+                  type: integer
+                  example: 1150
+                cancelled_trips:
+                  type: integer
+                  example: 50
+                completion_rate:
+                  type: number
+                  example: 95.83
+                total_revenue:
+                  type: number
+                  example: 150000000
