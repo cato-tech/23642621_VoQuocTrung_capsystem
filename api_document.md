@@ -7,7 +7,7 @@ Tài liệu đặc tả các giao diện lập trình ứng dụng (API) cho n�
 
 ## 1. Quy ước chung (General Conventions)
 
-* **Base URL:** `https://api.cabsystem.local/api/v1`
+* **Base URL:** `https://github.com/cato-tech/23642621_VoQuocTrung_capsystem/blob/main/openapi.json`
 * **Content-Type:** `application/json`
 * **Xác thực (Authentication):** Sử dụng chuẩn **JWT Bearer Token** truyền trong Header của các request yêu cầu bảo mật:
   ```http
