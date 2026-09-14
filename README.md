@@ -419,3 +419,58 @@ Quy trình xuyên suốt từ lúc khách hàng phát sinh nhu cầu đến khi 
 | **3** | Nhân viên vận hành | Liên hệ xác minh với tài xế/khách hàng qua điện thoại. | Ghi nhận ghi chú sự cố vào hệ thống. |
 | **4** | Nhân viên vận hành | Thực hiện thao tác can thiệp: Hủy chuyến bắt buộc, phân công lại tài xế khác hoặc hoàn tiền/điều chỉnh giá cước. | Bắt buộc nhập lý do can thiệp vào form xác nhận. |
 | **5** | Hệ thống | Lưu vết thao tác vào nhật ký kiểm toán (Audit Trail) gồm: Operator ID, mã chuyến, hành động thực hiện, thời gian và lý do can thiệp. | Lưu trữ dữ liệu log không thể chỉnh sửa phục vụ hậu kiểm. |
+
+# DANH SÁCH QUY TẮC NGHIỆP VỤ (BUSINESS RULES) - HỆ THỐNG CAB SYSTEM
+
+---
+
+## 1. QUY TẮC ĐIỀU PHỐI VÀ GHÉP TÀI XẾ (MATCHING & DISPATCH RULES)
+
+| Mã luật | Tên quy tắc | Mô tả chi tiết |
+|:---|:---|:---|
+| **BR-DIS-01** | Điều kiện tài xế nhận cuốc | Tài xế chỉ được tham gia thuật toán ghép cuốc khi thỏa mãn đồng thời: tài khoản đang hoạt động (`ACTIVE`), trạng thái làm việc là `ONLINE`, hồ sơ xe hợp lệ và không có chuyến đi dở dang (`status != BUSY`). |
+| **BR-DIS-02** | Bán kính quét tìm tài xế | Hệ thống quét tài xế theo bán kính tăng dần: khởi đầu 3 km quanh điểm đón; nếu không có tài xế phù hợp, mở rộng lên tối đa 5 km. |
+| **BR-DIS-03** | Tiêu chí ưu tiên phân cuốc | Danh sách tài xế được xếp thứ tự ưu tiên dựa trên: khoảng cách đến điểm đón ngắn nhất, điểm đánh giá trung bình cao nhất (Rating >= 4.5) và tỷ lệ nhận cuốc (Acceptance Rate) cao nhất. |
+| **BR-DIS-04** | Thời hạn phản hồi cuốc xe | Mỗi tài xế nhận được lời mời có đúng **15 giây** để bấm "Chấp nhận". Quá thời gian này, hệ thống coi như tài xế "Bỏ lỡ chuyến" (Missed) và tự động chuyển sang tài xế tiếp theo. |
+| **BR-DIS-05** | Giới hạn số lượt tìm kiếm | Hệ thống thực hiện tối đa 3 vòng quét hoặc tối đa 5 tài xế liên tiếp từ chối/bỏ lỡ. Nếu vượt ngưỡng mà chưa có người nhận, hệ thống tự động hủy tiến trình và báo `NO_DRIVER_FOUND` cho khách. |
+
+---
+
+## 2. QUY TẮC TÍNH CƯỚC VÀ PHÍ PHỤ THU (FARE CALCULATION RULES)
+
+| Mã luật | Tên quy tắc | Mô tả chi tiết |
+|:---|:---|:---|
+| **BR-FAR-01** | Công thức tính cước cơ bản | Tổng cước chuyến đi = Giá mở cửa + (Khoảng cách thực tế × Đơn giá/km) + (Thời gian di chuyển thực tế × Đơn giá/phút). Bảng giá chi tiết phụ thuộc vào từng phân khúc xe (4 chỗ, 7 chỗ, xe máy,...). |
+| **BR-FAR-02** | Hệ số cước giờ cao điểm (Surge) | Khi số lượng yêu cầu đặt xe tại một khu vực vượt quá số lượng tài xế sẵn sàng theo tỷ lệ quy định (ví dụ: nhu cầu/tài xế > 2), áp dụng hệ số nhân giá từ 1.2x đến tối đa 2.0x. |
+| **BR-FAR-03** | Khóa cước tạm tính (Upfront Fare) | Mức giá hiển thị khi khách đặt xe là mức ước tính dựa trên lộ trình chuẩn. Giá thực tế chỉ thay đổi nếu khách đổi điểm đến giữa đường hoặc thời gian kẹt xe/chờ đợi vượt quá 15 phút so với ước tính. |
+
+---
+
+## 3. QUY TẮC HỦY CHUYẾN VÀ PHÍ PHẠT (CANCELLATION RULES)
+
+| Mã luật | Tên quy tắc | Mô tả chi tiết |
+|:---|:---|:---|
+| **BR-CAN-01** | Khách hàng miễn phí hủy | Khách hàng được phép hủy chuyến miễn phí nếu thao tác trong vòng **2 phút** kể từ lúc tài xế bấm nhận chuyến, hoặc khi thời gian tài xế đến trễ hơn ETA dự tính từ 10 phút trở lên. |
+| **BR-CAN-02** | Áp dụng phí hủy đối với khách | Khách hàng hủy chuyến sau 2 phút (kể từ khi có tài xế nhận) hoặc tài xế đã đến điểm hẹn mà không liên lạc được khách sẽ bị tính phí hủy (ví dụ: 10.000 VNĐ - 15.000 VNĐ), cộng vào hóa đơn của chuyến đi tiếp theo. |
+| **BR-CAN-03** | Điều kiện tài xế hủy hợp lệ | Tài xế chỉ được hủy chuyến hợp lệ khi: đã đến đúng tọa độ điểm đón (sai số GPS không quá 100m), đã bấm "Đã đến nơi" và đã chờ tối thiểu **10 phút** mà khách không xuất hiện/không nhấc máy. |
+| **BR-CAN-04** | Chế tài tài xế hủy chuyến tùy tiện | Tài xế tự ý hủy chuyến khi chưa đủ điều kiện quá 3 lần/ngày sẽ bị hệ thống tạm khóa quyền nhận chuyến (tự động chuyển sang `OFFLINE`) trong 60 phút. |
+
+---
+
+## 4. QUY TẮC THANH TOÁN VÀ BẢO MẬT (PAYMENT & SECURITY RULES)
+
+| Mã luật | Tên quy tắc | Mô tả chi tiết |
+|:---|:---|:---|
+| **BR-PAY-01** | Chuẩn bảo mật thẻ (PCI-DSS) | Hệ thống tuyệt đối không lưu trữ thông tin nhạy cảm của thẻ thanh toán (CVV/CVC, 16 số thẻ đầy đủ). Mọi giao dịch qua thẻ phải được mã hóa thành chuỗi định danh (Tokenization) thông qua nhà cung cấp Cổng thanh toán. |
+| **BR-PAY-02** | Xử lý sự cố thanh toán điện tử | Trường hợp cổng thanh toán trả về mã lỗi giao dịch, hệ thống cho phép thử lại tối đa 3 lần. Nếu vẫn thất bại, hệ thống tự động chuyển hình thức thanh toán của chuyến đi sang **Tiền mặt**. |
+| **BR-PAY-03** | Tạm ứng và Đối soát dòng tiền | Đối với các cuốc thanh toán bằng tiền mặt, hoa hồng dịch vụ của hệ thống (ví dụ: 20%) sẽ được tự động cấn trừ trực tiếp vào tài khoản ví ký quỹ (Driver Wallet) của tài xế ngay khi cuốc xe hoàn tất. |
+
+---
+
+## 5. QUY TẮC VẬN HÀNH VÀ QUẢN TRỊ (OPERATIONAL & AUDIT RULES)
+
+| Mã luật | Tên quy tắc | Mô tả chi tiết |
+|:---|:---|:---|
+| **BR-OPS-01** | Cơ chế lưu vết can thiệp (Audit Trail) | Mọi hành động can thiệp dữ liệu thủ công từ nhân viên vận hành (hủy chuyến, sửa cước, khóa tài khoản, hoàn tiền) bắt buộc phải nhập lý do và được ghi log bất biến (Operator ID, Action, Timestamp, Reason). |
+| **BR-OPS-02** | Phân quyền truy cập theo vai trò (RBAC) | Nhân viên hỗ trợ (Support) chỉ có quyền xem trạng thái chuyến và vị trí GPS; chỉ có Quản trị viên cấp cao (Admin/Supervisor) mới có quyền can thiệp dòng tiền, hoàn cước hoặc mở khóa tài khoản bị kỷ luật. |
+| **BR-OPS-03** | Cảnh báo mất kết nối GPS | Nếu thiết bị của tài xế đang trong chuyến đi (`IN_PROGRESS`) mà mất tín hiệu GPS quá **5 phút**, hệ thống phải kích hoạt cờ cảnh báo bất thường trên màn hình giám sát của bộ phận vận hành để liên hệ xác minh an toàn. |
