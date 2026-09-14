@@ -1,5 +1,9 @@
 # TÀI LIỆU PHÂN TÍCH YÊU CẦU HỆ THỐNG ĐẶT XE (CAB SYSTEM)
 
+> **Tài liệu kỹ thuật liên quan:**
+> - Đặc tả API hệ thống: [api_document.md](api_document.md)
+> - Cấu hình OpenAPI Specification: [openapi.yaml](openapi.yaml)
+
 ## MỤC LỤC
 1. [Vấn đề của hệ thống hiện tại & Câu hỏi làm rõ](#1-vấn-đề-của-hệ-thống-hiện-tại--câu-hỏi-làm-rõ)
 2. [Mục tiêu nghiệp vụ](#2-mục-tiêu-nghiệp-vụ)
