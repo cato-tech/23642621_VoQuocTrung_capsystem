@@ -186,7 +186,6 @@ Dự án **CAB System** được thực hiện trong **7 tuần**, tập trung x
 
 ## 7. SƠ ĐỒ USE CASE TỔNG QUÁT
 
-*(Lưu ý: Đổi tên file ảnh thành `usecase.jpg` đặt trong thư mục `images/` để đường dẫn luôn hoạt động chính xác)*
 
 ![Use Case Diagram](images/usecase.png)
 
