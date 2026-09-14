@@ -202,127 +202,93 @@ Mục tiêu cuối cùng của phạm vi 7 tuần là hoàn thành một phiên 
 
 ![Use Case Diagram](images/1787044358233_200208010526605605_7442673884015635115_b8c89839e25e57fd66429b7dc4a1f6a2%20(1).jpg)
 
-# TÀI LIỆU ĐẶC TẢ USE CASE - HỆ THỐNG CAB SYSTEM
+# BÁO CÁO PHÂN TÍCH YÊU CẦU - HỆ THỐNG ĐẶT XE (CAB SYSTEM)
 
 ---
 
-## 1. TỔNG QUAN HỆ THỐNG
+## I. SƠ ĐỒ USE CASE TỔNG QUÁT (PLANTUML)
 
-### 1.1 Mục tiêu dự án
-Xây dựng nền tảng đặt xe trực tuyến (CAB System) tự động hóa quy trình điều phối, theo dõi chuyến đi theo thời gian thực, quản lý thanh toán tập trung và hỗ trợ vận hành quy mô lớn trong thời gian triển khai 7 tuần.
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
 
-### 1.2 Danh sách Tác nhân (Actors)
-* **Khách hàng (Customer):** Người dùng dịch vụ đặt xe, theo dõi chuyến, thanh toán và đánh giá.
-* **Tài xế (Driver):** Đối tác vận chuyển, nhận chuyến, cập nhật hành trình và vị trí thực tế.
-* **Nhân viên vận hành (Operator/Admin):** Quản lý hồ sơ, giám sát chuyến đi, xử lý sự cố và xem báo cáo.
-* **Cổng thanh toán (Payment Gateway - External):** Đối tác xử lý giao dịch điện tử (không lưu trữ thông tin thẻ nhạy cảm trên CAB System).
-* **Dịch vụ thông báo (Notification Service - External):** Cung cấp hạ tầng gửi Push Notification, SMS.
+actor "Khách hàng" as Customer
+actor "Tài xế" as Driver
+actor "Nhân viên vận hành" as Operator
+actor "Cổng thanh toán (Third-party)" as PaymentGateway
+actor "Dịch vụ thông báo (Third-party)" as NotificationService
 
----
+rectangle "Hệ thống CAB System" {
+  
+  package "Quản lý Tài khoản & Xác thực" {
+    usecase "Đăng ký / Đăng nhập" as UC_Auth
+    usecase "Cập nhật hồ sơ cá nhân" as UC_UpdateProfile
+    usecase "Quản lý phương tiện & trạng thái" as UC_DriverStatus
+  }
 
-## 2. DANH SÁCH USE CASE TỔNG QUÁT
+  package "Quản lý Đặt xe & Chuyến đi" {
+    usecase "Tạo yêu cầu đặt xe" as UC_BookRide
+    usecase "Tìm & Điều phối tài xế" as UC_MatchDriver
+    usecase "Tiếp nhận / Từ chối chuyến" as UC_RespondRide
+    usecase "Cập nhật tiến trình chuyến" as UC_UpdateRideStatus
+    usecase "Theo dõi vị trí GPS & lộ trình" as UC_TrackRide
+    usecase "Hủy chuyến" as UC_CancelRide
+  }
 
-| Mã UC | Tên Use Case | Tác nhân chính | Phân hệ |
-| :--- | :--- | :--- | :--- |
-| **UC-01** | Tạo yêu cầu đặt xe | Khách hàng | Đặt xe & Chuyến đi |
-| **UC-02** | Tìm và Điều phối tài xế | Hệ thống (Hỗ trợ Khách hàng & Tài xế) | Đặt xe & Chuyến đi |
-| **UC-03** | Tiếp nhận hoặc Từ chối chuyến | Tài xế | Đặt xe & Chuyến đi |
-| **UC-04** | Cập nhật tiến trình chuyến đi | Tài xế | Đặt xe & Chuyến đi |
-| **UC-05** | Thanh toán cước chuyến đi | Khách hàng, Cổng thanh toán | Thanh toán |
-| **UC-06** | Giám sát và Xử lý chuyến lỗi | Nhân viên vận hành | Quản trị & Vận hành |
+  package "Thanh toán & Đánh giá" {
+    usecase "Tính cước chuyến đi" as UC_CalculateFare
+    usecase "Thanh toán cước phí" as UC_ProcessPayment
+    usecase "Xem lịch sử chuyến" as UC_ViewHistory
+    usecase "Đánh giá tài xế" as UC_Rating
+  }
 
----
+  package "Quản trị & Vận hành" {
+    usecase "Quản lý hồ sơ & phương tiện" as UC_ManageEntities
+    usecase "Giám sát & Xử lý chuyến lỗi" as UC_MonitorSupport
+    usecase "Xem báo cáo & Thống kê" as UC_ViewReports
+    usecase "Phân quyền quản trị" as UC_RolePermission
+  }
 
-## 3. ĐẶC TẢ CHI TIẾT CÁC USE CASE CỐT LÕI
+  package "Hệ thống Thông báo" {
+    usecase "Gửi thông báo đa kênh" as UC_SendNotification
+  }
+}
 
-### UC-01: Tạo yêu cầu đặt xe
-* **Tác nhân:** Khách hàng.
-* **Tiền điều kiện:** Khách hàng đã đăng nhập tài khoản trên ứng dụng.
-* **Hậu điều kiện:** Yêu cầu đặt xe được ghi nhận và chuyển vào hàng đợi điều phối.
-* **Luồng sự kiện chính (Main Flow):**
-  1. Khách hàng mở ứng dụng, nhập điểm đón và điểm đến.
-  2. Hệ thống tính toán lộ trình sơ bộ, hiển thị danh sách loại xe cùng giá cước ước tính.
-  3. Khách hàng chọn loại xe và nhấn nút "Đặt xe".
-  4. Hệ thống xác thực thông tin, tạo chuyến đi ở trạng thái `FINDING_DRIVER`.
-  5. Hệ thống kích hoạt Use Case **UC-02: Tìm và Điều phối tài xế**.
-  6. Hệ thống hiển thị màn hình chờ cho khách hàng kèm trạng thái tìm kiếm.
-* **Luồng ngoại lệ (Alternative / Exception Flow):**
-  * **E1 (Địa chỉ không hợp lệ):** Hệ thống thông báo lỗi và yêu cầu khách hàng chọn lại điểm đón/đến trên bản đồ.
-  * **E2 (Khách hàng hủy khi đang tìm):** Khách hàng nhấn "Hủy tìm kiếm", hệ thống cập nhật trạng thái chuyến thành `CANCELLED` và dừng tiến trình tìm tài xế.
+' Liên kết Khách hàng
+Customer --> UC_Auth
+Customer --> UC_UpdateProfile
+Customer --> UC_BookRide
+Customer --> UC_TrackRide
+Customer --> UC_CancelRide
+Customer --> UC_ProcessPayment
+Customer --> UC_ViewHistory
+Customer --> UC_Rating
 
----
+' Liên kết Tài xế
+Driver --> UC_Auth
+Driver --> UC_UpdateProfile
+Driver --> UC_DriverStatus
+Driver --> UC_RespondRide
+Driver --> UC_UpdateRideStatus
+Driver --> UC_ViewHistory
 
-### UC-02: Tìm và Điều phối tài xế
-* **Tác nhân:** Hệ thống (tự động), tương tác với Tài xế và Khách hàng.
-* **Tiền điều kiện:** Có chuyến đi ở trạng thái `FINDING_DRIVER`.
-* **Hậu điều kiện:** Chuyến đi được gán cho một tài xế hoặc chuyển sang trạng thái không tìm thấy xe.
-* **Luồng sự kiện chính (Main Flow):**
-  1. Hệ thống quét danh sách các tài xế có trạng thái `ONLINE`, đang sẵn sàng nhận chuyến trong bán kính phù hợp xung quanh điểm đón.
-  2. Hệ thống sắp xếp mức độ ưu tiên theo khoảng cách và các tiêu chí vận hành.
-  3. Hệ thống gửi thông báo mời cuốc xe đến tài xế ưu tiên số 1 kèm bộ đếm thời gian phản hồi (timeout).
-  4. Tài xế chấp nhận cuốc xe (kích hoạt **UC-03**).
-  5. Hệ thống gán ID tài xế vào chuyến đi, cập nhật trạng thái thành `DRIVER_ASSIGNED`.
-  6. Hệ thống gửi thông báo xác nhận kèm thông tin xe/tài xế đến Khách hàng.
-* **Luồng ngoại lệ (Alternative / Exception Flow):**
-  * **A1 (Tài xế từ chối hoặc hết giờ phản hồi):** Hệ thống tự động chuyển yêu cầu sang tài xế ưu tiên tiếp theo trong danh sách mà không yêu cầu khách hàng đặt lại.
-  * **E1 (Hết danh sách tài xế / Không có tài xế nhận):** Quá thời gian quy định hoặc không còn tài xế phù hợp, hệ thống cập nhật trạng thái `NO_DRIVER_FOUND` và thông báo xin lỗi khách hàng.
+' Liên kết Quản trị viên
+Operator --> UC_Auth
+Operator --> UC_ManageEntities
+Operator --> UC_MonitorSupport
+Operator --> UC_ViewReports
+Operator --> UC_RolePermission
 
----
+' Quan hệ phụ thuộc (Include / Extend)
+UC_BookRide .> UC_MatchDriver : <<include>>
+UC_MatchDriver .> UC_SendNotification : <<include>>
+UC_UpdateRideStatus .> UC_CalculateFare : <<include>> (khi hoàn thành)
+UC_CalculateFare .> UC_ProcessPayment : <<include>>
+UC_ProcessPayment .> UC_SendNotification : <<include>>
 
-### UC-03: Tiếp nhận hoặc Từ chối chuyến
-* **Tác nhân:** Tài xế.
-* **Tiền điều kiện:** Tài xế đang `ONLINE`, ở trạng thái sẵn sàng và nhận được thông báo cuốc xe mới.
-* **Hậu điều kiện:** Cuốc xe được xác nhận hoặc tiếp tục chuyển cho tài xế khác.
-* **Luồng sự kiện chính (Main Flow):**
-  1. Màn hình tài xế hiển thị pop-up yêu cầu chuyến đi: điểm đón, khoảng cách dự kiến, loại dịch vụ và đồng hồ đếm ngược.
-  2. Tài xế bấm "Chấp nhận".
-  3. Hệ thống ghi nhận tài xế đã nhận chuyến, khóa tài xế khỏi danh sách nhận chuyến khác (`BUSY`).
-  4. Hệ thống chuyển màn hình tài xế sang chế độ điều hướng đến điểm đón.
-* **Luồng ngoại lệ (Alternative Flow):**
-  * **A1 (Tài xế chủ động bấm "Từ chối"):** Hệ thống ghi nhận phản hồi và chuyển tiếp chuyến đi cho tài xế khác (quay lại UC-02).
-  * **A2 (Hết thời gian chờ - Timeout):** Hệ thống tự động đánh dấu cuốc xe bị bỏ lỡ, chuyển sang tài xế kế tiếp.
+' Liên kết dịch vụ bên thứ ba
+UC_ProcessPayment --> PaymentGateway
+UC_SendNotification --> NotificationService
 
----
-
-### UC-04: Cập nhật tiến trình chuyến đi
-* **Tác nhân:** Tài xế, Khách hàng (theo dõi).
-* **Tiền điều kiện:** Chuyến đi đang ở trạng thái `DRIVER_ASSIGNED`.
-* **Hậu điều kiện:** Chuyến đi hoàn thành và sẵn sàng cho bước tính cước/thanh toán.
-* **Luồng sự kiện chính (Main Flow):**
-  1. Tài xế di chuyển đến điểm hẹn và bấm cập nhật: `ARRIVED_AT_PICKUP` (Đã đến điểm đón). Hệ thống gửi thông báo cho khách hàng.
-  2. Khách hàng lên xe, tài xế bấm: `IN_PROGRESS` (Đang di chuyển).
-  3. Ứng dụng tài xế gửi tọa độ GPS định kỳ về máy chủ; màn hình khách hàng cập nhật vị trí xe theo thời gian thực.
-  4. Khi đến nơi, tài xế bấm: `COMPLETED` (Hoàn thành chuyến đi).
-  5. Hệ thống chốt quãng đường, thời gian thực tế và tự động tính cước phí.
-* **Luồng ngoại lệ (Alternative Flow):**
-  * **E1 (Khách hàng không xuất hiện):** Tài xế chờ quá thời gian quy định tại điểm đón, chọn lý do "Khách không đến" và bấm hủy chuyến theo chính sách.
-
----
-
-### UC-05: Thanh toán cước chuyến đi
-* **Tác nhân:** Khách hàng, Cổng thanh toán (External), Tài xế.
-* **Tiền điều kiện:** Chuyến đi vừa chuyển sang trạng thái `COMPLETED`.
-* **Hậu điều kiện:** Hóa đơn chuyến đi được ghi nhận trạng thái đã thanh toán thành công.
-* **Luồng sự kiện chính (Main Flow - Thanh toán điện tử):**
-  1. Hệ thống tính tổng tiền phải trả dựa trên loại xe, quãng đường và thời gian thực tế.
-  2. Hệ thống gửi yêu cầu thanh toán sang Cổng thanh toán bên ngoài (sử dụng Token/Redirect, không lưu thông tin thẻ trên hệ thống).
-  3. Cổng thanh toán trả về kết quả thành công (`PAYMENT_SUCCESS`).
-  4. Hệ thống cập nhật trạng thái hóa đơn, gửi thông báo xác nhận thanh toán kèm biên lai điện tử cho khách hàng và tài xế.
-  5. Hệ thống mở màn hình cho phép khách hàng đánh giá (1-5 sao) và để lại nhận xét về tài xế.
-* **Luồng ngoại lệ (Alternative Flow):**
-  * **A1 (Thanh toán bằng tiền mặt):** Tài xế trực tiếp thu tiền mặt từ khách, sau đó bấm xác nhận "Đã thu tiền mặt" trên ứng dụng.
-  * **E1 (Thanh toán điện tử thất bại):** Cổng thanh toán trả về lỗi (thẻ hết hạn, không đủ số dư, lỗi cổng). Hệ thống thông báo lỗi cho khách hàng và cung cấp tùy chọn: Thử lại cổng thanh toán hoặc Chuyển sang thanh toán tiền mặt.
-
----
-
-### UC-06: Giám sát và Xử lý chuyến lỗi
-* **Tác nhân:** Nhân viên vận hành (Operator/Admin).
-* **Tiền điều kiện:** Nhân viên vận hành đã đăng nhập tài khoản quản trị được phân quyền.
-* **Hậu điều kiện:** Chuyến đi gặp sự cố được can thiệp xử lý, lưu vết hành động vào Audit Log.
-* **Luồng sự kiện chính (Main Flow):**
-  1. Nhân viên vận hành truy cập giao diện Dashboard giám sát các chuyến đi đang hoạt động hoặc danh sách cảnh báo chuyến lỗi (ví dụ: cuốc xe bị treo quá lâu, tài xế mất tín hiệu GPS, khách hàng khiếu nại).
-  2. Chọn xem chi tiết một chuyến đi gặp sự cố.
-  3. Hệ thống hiển thị lịch sử trạng thái, thông tin tài xế, khách hàng và bản đồ vị trí cuối cùng được ghi nhận.
-  4. Nhân viên thực hiện thao tác can thiệp: Hủy chuyến thủ công, Điều phối lại tài xế, hoặc Hoàn tiền/Điều chỉnh cước phí.
-  5. Nhân viên nhập lý do can thiệp và bấm "Xác nhận".
-  6. Hệ thống lưu vết thao tác (Operator ID, Thời gian, Hành động, Ghi chú) vào Audit Trail để phục vụ hậu kiểm.
+@enduml
