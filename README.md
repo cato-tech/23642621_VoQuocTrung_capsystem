@@ -342,3 +342,80 @@ Mục tiêu cuối cùng của phạm vi 7 tuần là hoàn thành một phiên 
 | – Luồng sự kiện ngoại lệ (exception flow): | |
 |---|---|
 | 7.1. Nhân viên nhấn xác nhận nhưng bỏ trống lý do. | 7.2. Hệ thống hiển thị cảnh báo "Bắt buộc phải nhập lý do xử lý sự cố để lưu vết kiểm toán". Quay lại bước 6. |
+
+# QUY TRÌNH NGHIỆP VỤ HỆ THỐNG CAB SYSTEM (BUSINESS PROCESS)
+
+---
+
+## 1. QUY TRÌNH TỔNG THỂ VÒNG ĐỜI CHUYẾN ĐI (END-TO-END RIDE LIFECYCLE)
+
+Quy trình xuyên suốt từ lúc khách hàng phát sinh nhu cầu đến khi hoàn tất thanh toán và phản hồi dịch vụ:
+
+| Bước | Thực hiện bởi | Hành động nghiệp vụ | Kết quả / Trạng thái chuyến |
+|:---|:---|:---|:---|
+| **BP01.1** | Khách hàng | Mở app, chọn điểm đón, điểm trả và loại dịch vụ xe. Bấm "Đặt xe". | Tạo yêu cầu đặt xe (`FINDING_DRIVER`) |
+| **BP01.2** | Hệ thống | Quét tọa độ GPS, lập danh sách tài xế `ONLINE` gần nhất và phát cuốc xe theo thứ tự ưu tiên. | Gửi yêu cầu chuyến tới tài xế |
+| **BP01.3** | Tài xế | Xem thông tin chuyến và bấm "Chấp nhận" trong vòng 15 giây. | Gán tài xế thành công (`DRIVER_ASSIGNED`) |
+| **BP01.4** | Tài xế | Di chuyển đến đón khách và bấm "Đã đến nơi". | Cập nhật trạng thái `ARRIVED_AT_PICKUP` |
+| **BP01.5** | Tài xế | Đón khách lên xe và bấm "Bắt đầu chuyến đi". | Cập nhật trạng thái `IN_PROGRESS` |
+| **BP01.6** | Tài xế | Chở khách đến điểm trả và bấm "Hoàn thành chuyến". | Cập nhật trạng thái `COMPLETED` |
+| **BP01.7** | Hệ thống | Khóa lộ trình, tính toán cước phí thực tế dựa trên bảng giá và quãng đường. | Tạo hóa đơn thanh toán (`UNPAID`) |
+| **BP01.8** | Khách / Cổng TT | Thanh toán qua Cổng thanh toán hoặc trả tiền mặt cho tài xế. | Cập nhật hóa đơn (`PAID`) |
+| **BP01.9** | Khách hàng | Chấm điểm sao (1-5 sao) và để lại phản hồi về chuyến đi. | Đóng phiên giao dịch |
+
+---
+
+## 2. QUY TRÌNH CHI TIẾT THEO TỪNG PHÂN HỆ NGHIỆP VỤ
+
+### 2.1. Quy trình Điều phối & Ghép nối tài xế (Matching Process)
+
+* **Mục đích:** Đảm bảo tự động tìm kiếm tài xế lân cận tối ưu mà không gián đoạn trải nghiệm của khách hàng.
+
+| STT | Bên liên quan | Thao tác thực hiện | Xử lý ngoại lệ / Rẽ nhánh |
+|:---|:---|:---|:---|
+| **1** | Hệ thống | Tiếp nhận yêu cầu từ khách hàng; xác định bán kính tìm kiếm (ví dụ: 3km - 5km). | Nếu không có tài xế nào `ONLINE`: Báo lỗi không tìm thấy xe. |
+| **2** | Hệ thống | Sắp xếp độ ưu tiên của tài xế: Khoảng cách gần nhất, đánh giá sao cao, tỷ lệ nhận chuyến tốt. | Chọn tài xế đứng đầu danh sách ưu tiên. |
+| **3** | Hệ thống & Tài xế | Gửi thông báo chuyến đi đến tài xế ưu tiên kèm bộ đếm ngược 15 giây. | - **Nếu tài xế từ chối:** Chuyển ngay sang tài xế ưu tiên tiếp theo.<br>- **Nếu quá 15s không phản hồi:** Đánh dấu bỏ lỡ, chuyển sang tài xế tiếp theo. |
+| **4** | Tài xế | Bấm "Chấp nhận" chuyến đi. | Chuyển trạng thái tài xế sang `BUSY` để không nhận thêm cuốc khác. |
+| **5** | Hệ thống | Gửi thông báo xác nhận ghép chuyến thành công cho khách hàng kèm: Tên tài xế, biển số xe, số điện thoại và tọa độ hiện tại. | Khách hàng có thể bấm theo dõi xe trên bản đồ. |
+
+---
+
+### 2.2. Quy trình Thực hiện chuyến đi & Cập nhật vị trí (Trip Execution & Tracking)
+
+* **Mục đích:** Đảm bảo dữ liệu hành trình minh bạch, hỗ trợ định vị thời gian thực giữa tài xế và khách hàng.
+
+| STT | Bên liên quan | Thao tác thực hiện | Quy định nghiệp vụ liên quan |
+|:---|:---|:---|:---|
+| **1** | Tài xế | Bật định vị GPS liên tục, di chuyển tới điểm đón của khách. | Ứng dụng gửi tọa độ GPS về hệ thống mỗi 3-5 giây. |
+| **2** | Hệ thống | Ước tính thời gian đến (ETA) và cập nhật đường đi của xe trên màn hình khách hàng. | Đảm bảo tính real-time cho hành trình. |
+| **3** | Tài xế | Đến điểm đón, bấm "Đã đến điểm đón". Khách hàng nhận chuông thông báo xe đã tới. | Nếu quá 10 phút khách không ra và không gọi được: Cho phép tài xế hủy chuyến hợp lệ. |
+| **4** | Tài xế | Khách lên xe, tài xế xác nhận điểm đến và bấm "Bắt đầu chuyến đi". | Đồng hồ tính cước bắt đầu ghi nhận dữ liệu thực tế. |
+| **5** | Tài xế | Lái xe trả khách tại điểm đến, bấm "Hoàn thành chuyến đi". | Khóa hành trình và tự động kích hoạt tiến trình tính tiền. |
+
+---
+
+### 2.3. Quy trình Tính cước & Xử lý thanh toán (Fare Calculation & Payment)
+
+* **Mục đích:** Xử lý cước phí chính xác, tích hợp cổng thanh toán an toàn, không lưu trữ thông tin thẻ nhạy cảm.
+
+| STT | Bên liên quan | Thao tác thực hiện | Kịch bản tiền mặt / Điện tử |
+|:---|:---|:---|:---|
+| **1** | Hệ thống | Thu thập dữ liệu thực tế (quãng đường GPS, thời gian di chuyển, loại xe, phụ phí cao điểm nếu có) để ra số tiền cuối cùng. | Hiển thị bảng kê chi tiết cước phí lên màn hình khách và tài xế. |
+| **2A** | Khách / Tài xế *(Tiền mặt)* | - Khách trả tiền mặt theo số tiền trên màn hình.<br>- Tài xế nhận tiền và bấm "Xác nhận đã thu đủ". | Hệ thống cập nhật hóa đơn sang trạng thái `PAID`. |
+| **2B** | Khách / Cổng TT *(Ví / Thẻ)* | - Khách chọn Cổng thanh toán (Tokenization/Redirect).<br>- Cổng thanh toán trừ tiền và trả kết quả thành công. | Hệ thống cập nhật hóa đơn sang trạng thái `PAID`. |
+| **3** | Hệ thống | Gửi hóa đơn điện tử qua Push Notification / Email cho khách hàng. | Nếu thanh toán điện tử thất bại: Cho phép khách thử lại hoặc chuyển sang trả tiền mặt. |
+
+---
+
+### 2.4. Quy trình Quản trị & Xử lý sự cố vận hành (Operation & Incident Handling)
+
+* **Mục đích:** Cho phép bộ phận vận hành can thiệp xử lý khi có tranh chấp, sự cố kỹ thuật hoặc chuyến bị treo.
+
+| STT | Bên liên quan | Thao tác thực hiện | Lưu vết / Kiểm toán (Audit) |
+|:---|:---|:---|:---|
+| **1** | Hệ thống | Quét định kỳ và kích hoạt cảnh báo chuyến bất thường (cuốc xe kéo dài bất thường, mất tín hiệu GPS quá 15 phút, khách gọi tổng đài khiếu nại). | Gắn cờ cảnh báo đỏ trên Dashboard vận hành. |
+| **2** | Nhân viên vận hành | Mở giao diện Dashboard, chọn chuyến đi có cờ cảnh báo để kiểm tra lịch sử cuốc xe và vị trí cuối cùng. | Toàn bộ dữ liệu hiển thị ở chế độ Read-only. |
+| **3** | Nhân viên vận hành | Liên hệ xác minh với tài xế/khách hàng qua điện thoại. | Ghi nhận ghi chú sự cố vào hệ thống. |
+| **4** | Nhân viên vận hành | Thực hiện thao tác can thiệp: Hủy chuyến bắt buộc, phân công lại tài xế khác hoặc hoàn tiền/điều chỉnh giá cước. | Bắt buộc nhập lý do can thiệp vào form xác nhận. |
+| **5** | Hệ thống | Lưu vết thao tác vào nhật ký kiểm toán (Audit Trail) gồm: Operator ID, mã chuyến, hành động thực hiện, thời gian và lý do can thiệp. | Lưu trữ dữ liệu log không thể chỉnh sửa phục vụ hậu kiểm. |
