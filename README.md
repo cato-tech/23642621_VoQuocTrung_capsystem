@@ -202,93 +202,143 @@ Mục tiêu cuối cùng của phạm vi 7 tuần là hoàn thành một phiên 
 
 ![Use Case Diagram](images/1787044358233_200208010526605605_7442673884015635115_b8c89839e25e57fd66429b7dc4a1f6a2%20(1).jpg)
 
-# BÁO CÁO PHÂN TÍCH YÊU CẦU - HỆ THỐNG ĐẶT XE (CAB SYSTEM)
+# ĐẶC TẢ CHI TIẾT USE CASE - CAB SYSTEM
+
+### 1. Đặc tả UseCase Đặt xe
+
+| Mục | Nội dung |
+|---|---|
+| **– Tên use case:** | Đặt xe (Tạo chuyến đi) |
+| **– Mô tả sơ lược:** | Chức năng cho phép khách hàng chọn điểm đón, điểm đến, chọn loại xe và gửi yêu cầu đặt xe lên hệ thống. |
+| **– Actor chính:** | Khách hàng |
+| **– Actor phụ:** | Không |
+| **– Tiền điều kiện (Pre-condition):** | Khách hàng đã đăng nhập tài khoản vào ứng dụng thành công. |
+| **– Hậu điều kiện (Post-condition):** | Hệ thống tạo chuyến đi mới, chuyển sang trạng thái tìm kiếm tài xế lân cận. |
+| **– Luồng sự kiện chính (main flow):** | |
+
+| Actor: Khách hàng | System |
+|---|---|
+| 1. Nhập điểm đón và điểm đến trên ứng dụng. | 2. Hiển thị lộ trình dự kiến, danh sách các loại xe và giá tiền ước tính. |
+| 3. Chọn loại xe mong muốn và nhấn nút "Đặt xe". | 4. Kiểm tra tính hợp lệ của thông tin chuyến đi. |
+| | 5. Khởi tạo cuốc xe mới với trạng thái `FINDING_DRIVER`. |
+| | 6. Hiển thị màn hình chờ và kích hoạt tiến trình tìm kiếm tài xế phù hợp. |
+
+| – Luồng sự kiện thay thế: | |
+|---|---|
+| 3.1. Khách hàng nhấn "Hủy tìm kiếm" khi hệ thống đang tìm tài xế. | 3.2. Hệ thống hủy yêu cầu tìm kiếm và đưa khách hàng quay lại màn hình chính. |
+
+| – Luồng sự kiện ngoại lệ (exception flow): | |
+|---|---|
+| 1.1. Địa chỉ đón hoặc đến nằm ngoài phạm vi phục vụ. | 1.2. Hệ thống hiển thị thông báo "Khu vực chưa được hỗ trợ", yêu cầu chọn lại địa chỉ. |
+| | 6.1. Hết thời gian tìm kiếm mà không có tài xế nào nhận chuyến: Hệ thống hiển thị thông báo "Không tìm thấy tài xế, vui lòng thử lại sau". Kết thúc use case. |
 
 ---
 
-## I. SƠ ĐỒ USE CASE TỔNG QUÁT (PLANTUML)
+### 2. Đặc tả UseCase Tiếp nhận chuyến đi
 
-```plantuml
-@startuml
-left to right direction
-skinparam packageStyle rectangle
+| Mục | Nội dung |
+|---|---|
+| **– Tên use case:** | Tiếp nhận hoặc từ chối chuyến đi |
+| **– Mô tả sơ lược:** | Chức năng cho phép tài xế xem trước thông tin cuốc xe được điều phối và lựa chọn nhận hoặc từ chối. |
+| **– Actor chính:** | Tài xế |
+| **– Actor phụ:** | Dịch vụ thông báo |
+| **– Tiền điều kiện (Pre-condition):** | Tài xế đang đăng nhập, bật trạng thái sẵn sàng làm việc (`ONLINE`) và không có chuyến đi dở dang. |
+| **– Hậu điều kiện (Post-condition):** | Chuyến đi được gán cho tài xế và chuyển sang trạng thái bắt đầu đón khách. |
+| **– Luồng sự kiện chính (main flow):** | |
 
-actor "Khách hàng" as Customer
-actor "Tài xế" as Driver
-actor "Nhân viên vận hành" as Operator
-actor "Cổng thanh toán (Third-party)" as PaymentGateway
-actor "Dịch vụ thông báo (Third-party)" as NotificationService
+| Actor: Tài xế | System |
+|---|---|
+| | 1. Đổ chuông thông báo, hiển thị màn hình cuốc xe mới (điểm đón, khoảng cách, loại xe) và đồng hồ đếm ngược 15 giây. |
+| 2. Nhấn nút "Nhận chuyến". | 3. Kiểm tra tính khả dụng của chuyến đi. |
+| | 4. Gán tài xế vào chuyến đi, cập nhật trạng thái chuyến thành `DRIVER_ASSIGNED`. |
+| | 5. Chuyển trạng thái tài xế sang `BUSY` (bận). |
+| | 6. Hiển thị bản đồ chỉ đường đến điểm đón; gửi thông báo thông tin tài xế cho khách hàng. |
 
-rectangle "Hệ thống CAB System" {
-  
-  package "Quản lý Tài khoản & Xác thực" {
-    usecase "Đăng ký / Đăng nhập" as UC_Auth
-    usecase "Cập nhật hồ sơ cá nhân" as UC_UpdateProfile
-    usecase "Quản lý phương tiện & trạng thái" as UC_DriverStatus
-  }
+| – Luồng sự kiện thay thế: | |
+|---|---|
+| 2.1. Tài xế nhấn nút "Từ chối". | 2.2. Hệ thống ghi nhận tài xế từ chối và tự động chuyển cuốc xe sang tài xế phù hợp tiếp theo mà khách không phải đặt lại. |
 
-  package "Quản lý Đặt xe & Chuyến đi" {
-    usecase "Tạo yêu cầu đặt xe" as UC_BookRide
-    usecase "Tìm & Điều phối tài xế" as UC_MatchDriver
-    usecase "Tiếp nhận / Từ chối chuyến" as UC_RespondRide
-    usecase "Cập nhật tiến trình chuyến" as UC_UpdateRideStatus
-    usecase "Theo dõi vị trí GPS & lộ trình" as UC_TrackRide
-    usecase "Hủy chuyến" as UC_CancelRide
-  }
+| – Luồng sự kiện ngoại lệ (exception flow): | |
+|---|---|
+| | 1.1. Hết 15 giây đếm ngược mà tài xế không phản hồi: Hệ thống tự động ghi nhận là "Bỏ lỡ chuyến" và tự động điều phối cho tài xế khác. |
 
-  package "Thanh toán & Đánh giá" {
-    usecase "Tính cước chuyến đi" as UC_CalculateFare
-    usecase "Thanh toán cước phí" as UC_ProcessPayment
-    usecase "Xem lịch sử chuyến" as UC_ViewHistory
-    usecase "Đánh giá tài xế" as UC_Rating
-  }
+---
 
-  package "Quản trị & Vận hành" {
-    usecase "Quản lý hồ sơ & phương tiện" as UC_ManageEntities
-    usecase "Giám sát & Xử lý chuyến lỗi" as UC_MonitorSupport
-    usecase "Xem báo cáo & Thống kê" as UC_ViewReports
-    usecase "Phân quyền quản trị" as UC_RolePermission
-  }
+### 3. Đặc tả UseCase Cập nhật tiến trình chuyến đi
 
-  package "Hệ thống Thông báo" {
-    usecase "Gửi thông báo đa kênh" as UC_SendNotification
-  }
-}
+| Mục | Nội dung |
+|---|---|
+| **– Tên use case:** | Cập nhật tiến trình chuyến đi |
+| **– Mô tả sơ lược:** | Cho phép tài xế cập nhật từng mốc trạng thái của chuyến xe từ lúc đến điểm hẹn cho tới khi trả khách xong. |
+| **– Actor chính:** | Tài xế |
+| **– Actor phụ:** | Khách hàng |
+| **– Tiền điều kiện (Pre-condition):** | Chuyến đi đang ở trạng thái đã gán tài xế (`DRIVER_ASSIGNED`). |
+| **– Hậu điều kiện (Post-condition):** | Chuyến đi hoàn tất, hệ thống tự động khóa sổ lộ trình và tính tiền. |
+| **– Luồng sự kiện chính (main flow):** | |
 
-' Liên kết Khách hàng
-Customer --> UC_Auth
-Customer --> UC_UpdateProfile
-Customer --> UC_BookRide
-Customer --> UC_TrackRide
-Customer --> UC_CancelRide
-Customer --> UC_ProcessPayment
-Customer --> UC_ViewHistory
-Customer --> UC_Rating
+| Actor: Tài xế | System |
+|---|---|
+| 1. Lái xe đến điểm đón và nhấn nút "Đã đến điểm đón". | 2. Cập nhật trạng thái `ARRIVED_AT_PICKUP`, gửi thông báo cho khách hàng ra xe. |
+| 3. Khách lên xe, tài xế nhấn "Bắt đầu chuyến đi". | 4. Cập nhật trạng thái `IN_PROGRESS`, bắt đầu tính thời gian và quãng đường thực tế. |
+| 5. Chở khách đến điểm đến và nhấn "Hoàn thành chuyến". | 6. Cập nhật trạng thái `COMPLETED`, tính toán cước phí và chuyển sang màn hình thu tiền. |
 
-' Liên kết Tài xế
-Driver --> UC_Auth
-Driver --> UC_UpdateProfile
-Driver --> UC_DriverStatus
-Driver --> UC_RespondRide
-Driver --> UC_UpdateRideStatus
-Driver --> UC_ViewHistory
+| – Luồng sự kiện ngoại lệ (exception flow): | |
+|---|---|
+| 1.1. Tài xế chờ quá 10 phút tại điểm đón mà khách không xuất hiện: Tài xế nhấn nút "Hủy chuyến - Khách vắng mặt". | 1.2. Hệ thống kiểm tra tọa độ GPS của tài xế xác nhận đúng điểm hẹn, ghi nhận hủy cuốc theo chính sách và mở lại trạng thái `ONLINE` cho tài xế. |
 
-' Liên kết Quản trị viên
-Operator --> UC_Auth
-Operator --> UC_ManageEntities
-Operator --> UC_MonitorSupport
-Operator --> UC_ViewReports
-Operator --> UC_RolePermission
+---
 
-' Quan hệ phụ thuộc (Include / Extend)
-UC_BookRide .> UC_MatchDriver : <<include>>
-UC_MatchDriver .> UC_SendNotification : <<include>>
-UC_UpdateRideStatus .> UC_CalculateFare : <<include>> (khi hoàn thành)
-UC_CalculateFare .> UC_ProcessPayment : <<include>>
-UC_ProcessPayment .> UC_SendNotification : <<include>>
+### 4. Đặc tả UseCase Thanh toán chuyến đi
 
-' Liên kết dịch vụ bên thứ ba
-UC_ProcessPayment --> PaymentGateway
-UC_SendNotification --> NotificationService
+| Mục | Nội dung |
+|---|---|
+| **– Tên use case:** | Thanh toán chuyến đi |
+| **– Mô tả sơ lược:** | Khách hàng thực hiện thanh toán chi phí di chuyển qua tiền mặt hoặc cổng thanh toán điện tử. |
+| **– Actor chính:** | Khách hàng |
+| **– Actor phụ:** | Cổng thanh toán (Payment Gateway), Tài xế |
+| **– Tiền điều kiện (Pre-condition):** | Chuyến đi vừa chuyển sang trạng thái `COMPLETED` và cước phí đã được tính. |
+| **– Hậu điều kiện (Post-condition):** | Hóa đơn được thanh toán thành công và lưu vào lịch sử giao dịch. |
+| **– Luồng sự kiện chính (main flow - Thanh toán điện tử):** | |
 
-@enduml
+| Actor: Khách hàng | System |
+|---|---|
+| | 1. Hiển thị bảng kê chi tiết cước phí và các tùy chọn thanh toán. |
+| 2. Chọn hình thức Ví điện tử / Thẻ thanh toán và nhấn "Xác nhận thanh toán". | 3. Gửi yêu cầu trừ tiền kèm mã giao dịch an toàn sang Cổng thanh toán (không lưu thông tin thẻ). |
+| | 4. Cổng thanh toán xử lý và phản hồi giao dịch thành công. |
+| | 5. Cập nhật trạng thái hóa đơn là `PAID`, gửi biên lai điện tử cho khách hàng và tài xế. |
+| 6. Chấm điểm sao (1 - 5 sao), để lại nhận xét và nhấn "Gửi". | 7. Lưu đánh giá vào hồ sơ tài xế và đóng phiên chuyến đi. |
+
+| – Luồng sự kiện thay thế: | |
+|---|---|
+| 2.1. Khách hàng chọn phương thức "Tiền mặt". | 2.2. Hệ thống hiển thị số tiền mặt cần thu trên màn hình của tài xế. |
+| 2.3. Tài xế nhận tiền mặt từ khách và nhấn nút "Đã thu tiền". | 2.4. Hệ thống cập nhật hóa đơn là `PAID` bằng tiền mặt và chuyển đến bước 6. |
+
+| – Luồng sự kiện ngoại lệ (exception flow): | |
+|---|---|
+| | 4.1. Cổng thanh toán báo lỗi (không đủ số dư, thẻ hết hạn, lỗi mạng kết nối). |
+| 4.2. Khách hàng nhận thông báo thất bại, chọn "Thử lại" hoặc "Đổi sang thanh toán tiền mặt". | 4.3. Hệ thống xử lý theo lựa chọn của khách hàng. |
+
+---
+
+### 5. Đặc tả UseCase Giám sát và Xử lý sự cố chuyến đi
+
+| Mục | Nội dung |
+|---|---|
+| **– Tên use case:** | Giám sát và Xử lý sự cố chuyến đi |
+| **– Mô tả sơ lược:** | Hỗ trợ nhân viên vận hành theo dõi, xử lý thủ công các chuyến đi gặp sự cố hoặc giải quyết khiếu nại. |
+| **– Actor chính:** | Nhân viên vận hành |
+| **– Actor phụ:** | Không |
+| **– Tiền điều kiện (Pre-condition):** | Nhân viên vận hành đăng nhập tài khoản quản trị thành công và có quyền điều hành. |
+| **– Hậu điều kiện (Post-condition):** | Trạng thái chuyến đi được can thiệp thành công, lưu lại toàn bộ vết thao tác (Audit Log). |
+| **– Luồng sự kiện chính (main flow):** | |
+
+| Actor: Nhân viên vận hành | System |
+|---|---|
+| 1. Truy cập vào trang giám sát các chuyến đi đang hoạt động. | 2. Hiển thị danh sách chuyến xe kèm các cảnh báo bất thường (treo quá lâu, mất tín hiệu GPS). |
+| 3. Nhấp chọn vào chuyến đi đang gặp lỗi. | 4. Hiển thị thông tin chi tiết: khách hàng, tài xế, lịch sử trạng thái và tọa độ GPS gần nhất. |
+| 5. Chọn thao tác can thiệp (Hủy chuyến khẩn cấp / Đổi tài xế / Điều chỉnh cước phí). | 6. Hiển thị ô nhập lý do can thiệp. |
+| 7. Nhập lý do xử lý và nhấn nút "Xác nhận can thiệp". | 8. Cập nhật trạng thái mới cho chuyến đi, ghi lại nhật ký thao tác (ID nhân viên, thời gian, hành động, lý do) vào Audit Log. |
+
+| – Luồng sự kiện ngoại lệ (exception flow): | |
+|---|---|
+| 7.1. Nhân viên nhấn xác nhận nhưng bỏ trống lý do. | 7.2. Hệ thống hiển thị cảnh báo "Bắt buộc phải nhập lý do xử lý sự cố để lưu vết kiểm toán". Quay lại bước 6. |
