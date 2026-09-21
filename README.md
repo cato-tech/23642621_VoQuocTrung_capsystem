@@ -3,6 +3,7 @@
 > **Tài liệu kỹ thuật liên quan:**
 > - Đặc tả API hệ thống: [api_document.md](api_document.md)
 > - Cấu hình OpenAPI Specification: [openapi.yaml](openapi.yaml)
+> - Thiết kế miền & Phân rã DDD: [docs/domain_analysis.md](docs/domain_analysis.md)
 
 ## MỤC LỤC
 1. [Vấn đề của hệ thống hiện tại & Câu hỏi làm rõ](#1-vấn-đề-của-hệ-thống-hiện-tại--câu-hỏi-làm-rõ)
