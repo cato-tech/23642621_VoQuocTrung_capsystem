@@ -9,7 +9,7 @@
 2. [Mục tiêu nghiệp vụ](#2-mục-tiêu-nghiệp-vụ)
 3. [Phân tích Các bên liên quan (Stakeholders)](#3-phân-tích-các-bên-liên-quan-stakeholders)
 4. [Phạm vi dự án trong 7 tuần (MVP)](#4-phạm-vi-dự-án-trong-7-tuần-mvp)
-5. [Yêu cầu nghiệp vụ (Business Requirements)](#5-yêu-cầu-nghiệp-vụ-business-requirements)
+5. [Yêu cầu nghiệp vụ (Business Requirements)](#5-yêu-cầu-nghiệp-vụ-bgiitusiness-requirements)
 6. [Yêu cầu chức năng (Functional Requirements)](#6-yêu-cầu-chức-năng-functional-requirements)
 7. [Sơ đồ Use Case tổng quát](#7-sơ-đồ-use-case-tổng-quát)
 8. [Đặc tả chi tiết Use Case](#8-đặc-tả-chi-tiết-use-case)
