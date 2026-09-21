@@ -448,3 +448,5 @@ Dự án **CAB System** được thực hiện trong **7 tuần**, tập trung x
 | **RULE-OPS-01** | Lưu vết kiểm toán (Audit Trail) | Mọi thao tác can thiệp dữ liệu thủ công từ nhân viên vận hành (hủy chuyến, sửa cước, khóa tài khoản, hoàn tiền) bắt buộc phải nhập lý do và được ghi log bất biến. |
 | **RULE-OPS-02** | Phân quyền truy cập (RBAC) | Nhân viên hỗ trợ (Support) chỉ có quyền xem dữ liệu; Quản trị viên cấp cao (Admin/Supervisor) mới có quyền can thiệp dòng tiền, hoàn cước hoặc mở khóa tài khoản. |
 | **RULE-OPS-03** | Cảnh báo mất kết nối GPS | Nếu xe đang trong hành trình (`IN_PROGRESS`) bị mất tín hiệu GPS quá **5 phút**, hệ thống phải kích hoạt cờ cảnh báo đỏ trên màn hình giám sát để nhân viên hỗ trợ gọi xác minh an toàn. |
+
+![Use Case Diagram](images/domain.png)
